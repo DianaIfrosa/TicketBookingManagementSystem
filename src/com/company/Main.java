@@ -32,9 +32,9 @@ public class Main {
                 continue;
             }
             if (ans.toUpperCase().equals("NO")) {
-                //do register
+                //TODO register
             }
-            //do login
+            //TODO login
             // TODO DE DAT PARAMETRI
             int type = registration.logIn();
             if (type == 1) {
