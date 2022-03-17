@@ -1,6 +1,5 @@
 package com.company;
 
-
 import com.company.Entities.Building;
 import com.company.Services.Menu;
 import com.company.Services.Registration;

@@ -1,2 +1,4 @@
 # TicketBookingManagementSystem
-2nd year, 2nd semester
+This project simulates a ticket booking management system for cultural events using Java.  
+Course: Advanced OOP.
+
