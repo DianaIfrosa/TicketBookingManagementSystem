@@ -4,7 +4,6 @@ public class Registration {
     //singleton (early initialization)
     public static final Registration registration = new Registration();
 
-    private Registration() {}
     public static Registration getRegistration() {
         return registration;
     }

@@ -1,7 +1,7 @@
 package com.company.Users;
 
 public class Customer {
-    //singleton (lazy initialization)
+    //singleton (lazy initialization) because it refers to current user
     public static Customer customer;
 
     private Customer(){}

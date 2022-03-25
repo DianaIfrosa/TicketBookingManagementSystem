@@ -1,7 +1,7 @@
 package com.company.Users;
 
 public class Administrator {
-    //singleton (lazy initialization)
+    //singleton (lazy initialization) because it refers to current user
     public static Administrator administrator;
 
     private Administrator() {}

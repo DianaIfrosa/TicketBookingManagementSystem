@@ -11,17 +11,6 @@ public class Building {
     private HashMap<String, String> openHours;
     private List<Hall> halls;
 
-    private Building() {
-        //TODO READ
-        openHours = new HashMap<String, String>(7);
-        //Monday: 10-16 etc.
-        /*
-        this.address = address;
-        this.openHours = openHours;
-        this.halls = halls;
-        */
-    }
-
     public static Building getBuilding() {
         return building;
     }

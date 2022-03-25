@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+       /* Scanner scanner = new Scanner(System.in);
         Building building = Building.getBuilding();
         Registration registration = Registration.getRegistration();
         Menu menu = Menu.getMenu();
@@ -52,5 +52,6 @@ public class Main {
             }
         }
         scanner.close();
+        */
     }
 }
