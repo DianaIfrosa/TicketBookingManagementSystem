@@ -124,7 +124,7 @@ public abstract class Event {
     }
 
     public String toString(){
-        return nameEvent + " " + this.day + "." + this.month + "." + this.year;
+        return nameEvent + " " + this.day + "-" + this.month + "-" + this.year;
     }
 
     public abstract double calculatePrice(String seat);

@@ -8,22 +8,28 @@ public class Building {
     //singleton (early initialization)
     public static final Building building = new Building();
 
-    private String name = "CompanyName"; // TODO take from file
-    private String address = "Street no. 5, West";  // TODO take from file
+    private String name = "CompanyName"; // TODO read from file
+    private String address = "Street no. 5, West";  // TODO read from file
     private Map<String, String> openHours = Map.of("Monday", "10-18");
-    private List<Hall> halls;
-    private List<Event> incomingEvents, pastEvents;
+    private List<Hall> halls; //TODO take from file
+    private List<Event> futureEvents, pastEvents;
+
+    private Building(){
+        halls = new ArrayList<Hall>();
+        futureEvents = new ArrayList<Event>();
+        pastEvents = new ArrayList<Event>();
+    }
 
     public static Building getBuilding() {
         return building;
     }
 
     public List<Event> getIncomingEvents() {
-        return incomingEvents;
+        return futureEvents;
     }
 
     public void setIncomingEvents(List<Event> incomingEvents) {
-        this.incomingEvents = incomingEvents;
+        this.futureEvents = incomingEvents;
     }
 
     public void showBuildingInformation() {
@@ -31,7 +37,7 @@ public class Building {
         System.out.println("Address: " + address);
         System.out.println("Opening hours:");
         for (Map.Entry mapElement : openHours.entrySet()) {
-            System.out.print((String) mapElement.getKey() + ": " + (String) mapElement.getValue());
+            System.out.print(mapElement.getKey() + ": " +  mapElement.getValue());
         }
         System.out.println();
     }
@@ -39,7 +45,7 @@ public class Building {
     public boolean addEvent(Event event){
         //TODO IN ADMINISTRATOR READ INFO AND ADD TO FILE HERE
         if(event != null) {
-            this.incomingEvents.add(event);
+            this.futureEvents.add(event);
             return true; //done
         }
         return false; //something went wrong
@@ -48,24 +54,42 @@ public class Building {
     public boolean deleteEvent(int ID){
         //TODO REMOVE FROM FILES
         ID -= 1;
-        if (incomingEvents == null)
+        if (futureEvents == null)
             return false;
-        if (incomingEvents.size() == 0)
+        if (futureEvents.size() == 0)
             return false;
-        if (ID>=0 && ID<incomingEvents.size()) {
-            incomingEvents.remove(ID);
+        if (ID>=0 && ID<futureEvents.size()) {
+            futureEvents.remove(ID);
             return true; //done
         }
         else return false;
     }
 
-    public void showIncomingEvents(){
-        if(incomingEvents != null) {
-            for (int i = 0; i < incomingEvents.size(); i++)
-                System.out.println((i + 1) + ": " + incomingEvents.get(i));
+    public void showFutureEvents(){
+        if(futureEvents != null) {
+            if(futureEvents.size() == 0)
+                System.out.println("None\n");
+            else
+                for (int i = 0; i < futureEvents.size(); i++)
+                    System.out.println((i + 1) + ": " + futureEvents.get(i));
         }
         else
-            System.out.println("None");
+            System.out.println("None\n");
+    }
+    public Hall[] hallsAvailable(int day, int month, int year) {
+        Set<Hall> hallsSet = new HashSet<Hall>();
+        for(Hall hall: halls)
+            if (hall.isAvailable())
+                hallsSet.add(hall);
+
+        for(Event event:futureEvents)
+            if(event.getDay() == day && event.getMonth() == month && event.getYear() == year) //occupied hall
+                hallsSet.remove(event.getHall());
+
+        Hall[] result = new Hall[hallsSet.size()];
+        hallsSet.toArray(result);
+
+        return result;
     }
 
     public List<Hall> getHalls() {

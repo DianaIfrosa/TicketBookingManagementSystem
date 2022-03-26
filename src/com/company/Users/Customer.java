@@ -4,6 +4,7 @@ import com.company.Entities.Building;
 import com.company.Events.Event;
 import com.company.Tickets.Ticket;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
@@ -12,7 +13,11 @@ public class Customer {
     private List<String> favorites;
     private List<Ticket> futureTickets, oldTickets; //when a show is over the corresponding ticket goes to oldTickets section
 
-    private Customer(){}
+    private Customer(){
+        favorites = new ArrayList<String>();
+        futureTickets=new ArrayList<Ticket>();
+        oldTickets=new ArrayList<Ticket>();
+    }
     public static Customer getCustomer() {
         if (customer == null)
             customer = new Customer();
@@ -20,10 +25,10 @@ public class Customer {
         return customer;
     }
 
-    public void seeIncomingEvents() {
+    public void seeFutureEvents() {
         Building building = Building.getBuilding();
-        System.out.println("Incoming events:");
-        building.showIncomingEvents();
+        building.showFutureEvents();
+        System.out.println();
     }
 
     public void searchUsingDate(int day, int month, int year) {
@@ -35,10 +40,16 @@ public class Customer {
         else if(events.size() == 0)
             System.out.println("No events found");
         else {
+            boolean found = false;
             for (int i = 0; i < events.size(); i++)
-                if ((events.get(i).getDay() == day || day == 0) && (events.get(i).getMonth() == month || month == 0) && (events.get(i).getYear() == year || year == 0))
+                if ((events.get(i).getDay() == day || day == 0) && (events.get(i).getMonth() == month || month == 0) && (events.get(i).getYear() == year || year == 0)) {
                     System.out.println((i + 1) + ". " + events.get(i));
+                    found = true;
+                }
+            if (found == false)
+                System.out.println("No events found!");
         }
+        System.out.println();
     }
 
     public void searchUsingBudget(int budget) {
@@ -55,6 +66,7 @@ public class Customer {
                 if (events.get(i).getStartingPrice() <= budget)
                     System.out.println((i + 1) + ". " + events.get(i));
         }
+        System.out.println();
     }
 
     public void seeAnEvent(int ID) {
@@ -63,10 +75,11 @@ public class Customer {
         List<Event> events = building.getIncomingEvents();
         if (events == null)
             System.out.println("There is nothing to see!");
-        else if (ID>0  && ID < events.size())
+        else if (ID>=0  && ID < events.size())
             building.getIncomingEvents().get(ID).presentation();
         else
-            System.out.println("Something went wrong! Try again!\n");
+            System.out.println("Something went wrong! Try again!");
+        System.out.println();
     }
 
     public void showPurchasedTickets() {
@@ -83,6 +96,7 @@ public class Customer {
                 System.out.println();
             }
         }
+        System.out.println();
     }
 
     public void showOldTickets() {
@@ -98,6 +112,7 @@ public class Customer {
                 System.out.println();
             }
         }
+        System.out.println();
     }
 
     public void showFavorites() {
@@ -108,15 +123,14 @@ public class Customer {
             System.out.println("None");
         else {
             for (int i = 0; i < favorites.size(); i++)
-                System.out.println((i + 1) + " " + favorites.get(i));
+                System.out.println((i + 1) + ". " + favorites.get(i));
         }
+        System.out.println();
     }
 
     public boolean addToFavs(int ID){
         ID -= 1;
         List<Event> events = Building.getBuilding().getIncomingEvents();
-        if(favorites == null)
-            return false;
         if(ID>=0 && ID<events.size()) {
             favorites.add(events.get(ID).getNameEvent());
             return true;

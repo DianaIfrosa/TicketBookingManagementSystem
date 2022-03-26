@@ -6,7 +6,6 @@ import com.company.Events.Concert;
 import com.company.Events.Event;
 import com.company.Events.TheatrePlay;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Administrator {
@@ -24,44 +23,19 @@ public class Administrator {
     public void addEvent(Scanner scanner) {
         //TODO ADD TO FILE
         Building building = Building.getBuilding();
-        List<Hall> halls = building.getHalls();
 
-        System.out.print("Halls available: ");
-        boolean anyAvailable = false;
-        if (halls == null) {
-            System.out.println("No hall available.");
-            return;
-        }
-        for(int i=0; i<halls.size(); i++)
-            if(halls.get(i).isAvailable()) {
-                System.out.print(i + " ");
-                anyAvailable = true;
-            }
-
-        if (anyAvailable == false) {
-            System.out.println("No hall available.");
-            return;
-        }
-        System.out.print("Your hall option: ");
-        int noHall = scanner.nextInt();
-        if(! halls.get(noHall).isAvailable() || noHall >= halls.size() || noHall < 0) {
-            System.out.println("Invalid hall! Please try again!");
-            return;
-        }
-        //double startingPrice, String nameEvent, String description, String type,
-        //int day, int month, int year, String startingHour, String endingHour
         System.out.print("Enter event name: ");
-        String eventName = scanner.nextLine();
+        String eventName = scanner.next();
         System.out.print("Enter starting price ($): ");
         double startingPrice = scanner.nextDouble();
         System.out.print("Enter event description: ");
-        String description = scanner.nextLine();
+        String description = scanner.next();
         System.out.print("Enter event type: ");
-        String type = scanner.nextLine();
+        String type = scanner.next();
         System.out.print("Enter event starting hour: ");
-        String startingHour = scanner.nextLine();
+        String startingHour = scanner.next();
         System.out.print("Enter event ending hour: ");
-        String endingHour = scanner.nextLine();
+        String endingHour = scanner.next();
         System.out.print("Enter event day: ");
         int day = scanner.nextInt();
         System.out.print("Enter event month: ");
@@ -69,39 +43,58 @@ public class Administrator {
         System.out.print("Enter event year: ");
         int year = scanner.nextInt();
 
+        System.out.print("Halls available: ");
+        Hall[] hallsAvailable = building.hallsAvailable(day, month, year);
+        for(int i=0; i<hallsAvailable.length; i++)
+            System.out.println(i + ". " + hallsAvailable[i].getName());
+
+        System.out.print("Your hall option: ");
+        int noHall = scanner.nextInt();
+        if(noHall >= hallsAvailable.length || noHall < 0) {
+            System.out.println("Invalid hall! Please try again\n!");
+            return;
+        }
+
         System.out.println("Concert or play (c/p)? Type 'e' for exit");
         Event event;
         while(true) {
             char typeEvent = scanner.next().charAt(0); //concert or play
             if(typeEvent == 'c') {
-                System.out.println("It is a standing one (yes/no)?");
-                String ansStanding = scanner.next();
                 boolean standing;
-                if(ansStanding.equals("yes"))
-                    standing = true;
-                else if(ansStanding.equals("no"))
-                    standing = false;
-                else {
-                    System.out.println("Invalid option. Please try again!");
-                    return;
-                }
-
-                event = new Concert(halls.get(noHall), startingPrice, eventName, description, day, month, year, startingHour, endingHour, type, standing);
+                System.out.println("It is a standing one (yes/no)?");
+                while(true) {
+                    String ansStanding = scanner.next();
+                    if (ansStanding.equalsIgnoreCase("yes")) {
+                        standing = true;
+                        break;
+                    }
+                    else if (ansStanding.equalsIgnoreCase("no")) {
+                        standing = false;
+                        break;
+                    }
+                    else
+                        System.out.println("Invalid option! Type yes or no.");
+                    }
+                event = new Concert(hallsAvailable[noHall], startingPrice, eventName, description, day, month, year, startingHour, endingHour, type, standing);
                 break;
             }
             else if (typeEvent == 'p') {
-                System.out.println("Does it have intermission (yes/no)?");
-                String ansIntermission = scanner.next();
                 boolean intermission;
-                if(ansIntermission.equals("yes"))
+                System.out.println("Does it have intermission (yes/no)?");
+                while(true) {
+                String ansIntermission = scanner.next();
+                if(ansIntermission.equalsIgnoreCase("yes")) {
                     intermission = true;
-                else if(ansIntermission.equals("no"))
-                    intermission = false;
-                else {
-                    System.out.println("Invalid option. Please try again!");
-                    return;
+                    break;
                 }
-                event = new TheatrePlay(halls.get(noHall), startingPrice, eventName, description, day, month, year, startingHour, endingHour, type, intermission);
+                else if(ansIntermission.equalsIgnoreCase("no")) {
+                    intermission = false;
+                    break;
+                }
+                else
+                    System.out.println("Invalid option! Type yes or no.");
+                }
+                event = new TheatrePlay(hallsAvailable[noHall], startingPrice, eventName, description, day, month, year, startingHour, endingHour, type, intermission);
                 break;
             }
             else if (typeEvent == 'e')
@@ -112,7 +105,7 @@ public class Administrator {
 
         boolean ok = building.addEvent(event);
         if(ok)
-            System.out.println("Done!\n");
+            System.out.println("Event added!\n");
         else
             System.out.println("Something went wrong! Try again!\n");
     }
@@ -120,15 +113,28 @@ public class Administrator {
     public void deleteEvent(Scanner scanner){
         //TODO DELETE FROM FILE
         Building building = Building.getBuilding();
-        building.showIncomingEvents();
+        building.showFutureEvents();
+        if (building.getIncomingEvents()!= null){
+            if(building.getIncomingEvents().size() == 0) {
+            return;
+            }
+        }
+        else if (building.getIncomingEvents() == null)
+            return;
 
-        System.out.print("Enter the event ID you would like to remove: ");
+        System.out.print("Enter the event ID you would like to delete: ");
         int ID = scanner.nextInt();
 
         boolean ok = building.deleteEvent(ID);
         if(ok)
-            System.out.println("Done!\n");
+            System.out.println("Event deleted!\n");
         else
             System.out.println("Something went wrong! Try again!\n");
+    }
+
+    public void seeFutureEvents() {
+        Building building = Building.getBuilding();
+        building.showFutureEvents();
+        System.out.println();
     }
 }
