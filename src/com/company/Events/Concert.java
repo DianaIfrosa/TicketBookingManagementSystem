@@ -3,22 +3,13 @@ package com.company.Events;
 import com.company.Entities.Hall;
 
 public class Concert extends Event{
-    private String type; //'regular', 'premium with merch', 'meet and greet'
     private boolean standing; //whether it is with allocated seat or not
     final int EXTRA_PRICE = 10; //for calculating ticket price based on seat and starting from startingPrice
 
     public Concert(Hall hall, double startingPrice, String nameEvent, String description, int day, int month, int year, String startingHour, String endingHour, String type, boolean standing) {
-        super(hall, startingPrice, nameEvent, description, day, month, year, startingHour, endingHour);
+        super(hall, startingPrice, nameEvent, description, type,  day, month, year, startingHour, endingHour);
         this.type = type;
         this.standing = standing;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public boolean isStanding() {
@@ -49,12 +40,13 @@ public class Concert extends Event{
             return this.startingPrice;
         }
     public void presentation(){
-        System.out.println("Name: " + this.nameEvent);
+        System.out.println("Concert: " + this.nameEvent);
         System.out.println("Type of concert: " + this.type);
         System.out.println("Description: " + this.description);
         System.out.println("Date and hours: " + this.day + "." + this.month + "." + this.year + " "
                 + this.startingHour + "-" + this.endingHour);
         System.out.println("Is it a standing concert: " + this.standing);
+        System.out.println("Starting price: " + this.startingPrice  + "$");
     }
 
 

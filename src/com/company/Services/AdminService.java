@@ -1,7 +1,8 @@
 package com.company.Services;
 
 import com.company.Users.Administrator;
-import com.company.Users.Customer;
+
+import java.util.Scanner;
 
 public class AdminService implements ServiceInterface{
     //singleton (lazy initialization)
@@ -18,24 +19,21 @@ public class AdminService implements ServiceInterface{
         return adminService;
     }
     @Override
-    public void showOptions() {
+    public void showOptions(Scanner scanner) {
         System.out.println("Menu:");
         System.out.println("1. Add event");
         System.out.println("2. Delete event");
-        System.out.println("3. Modify event");
-        System.out.println("4. Log out");
+        System.out.println("3. Log out");
 
         while(true) {
             System.out.print("Your option: ");
-            int option = Integer.parseInt(System.console().readLine());
+            int option = scanner.nextInt();
             if (verifyOption(option)) {
                 if (option == 1)
-                    admin.addEvent();
+                    admin.addEvent(scanner); //TODO CREATE EVENT
                 else if (option == 2)
-                    admin.deleteEvent();
-                else if (option == 3)
-                    admin.modifyEvent();
-                else if (option == 4) {
+                    admin.deleteEvent(scanner);
+                else if (option == 3) {
                     Registration.logOut();
                     break;
                 }
@@ -46,9 +44,6 @@ public class AdminService implements ServiceInterface{
     }
 
     public boolean verifyOption(int option){
-        if (option <= 4 && option >=1 )
-            return true;
-        else
-            return false;
+        return option <= 3 && option >= 1;
     }
 }

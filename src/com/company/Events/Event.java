@@ -5,7 +5,7 @@ import com.company.Entities.Hall;
 public abstract class Event {
     protected Hall hall;
     protected double startingPrice;
-    protected String nameEvent, description;
+    protected String nameEvent, description, type;
     protected char[][] availableSeats; //marked with X as taken and O as free
     protected int day, month, year; //date
     protected String startingHour, endingHour;
@@ -13,10 +13,11 @@ public abstract class Event {
 
     public Event(){}
 
-    public Event(Hall hall, double startingPrice, String nameEvent, String description, int day, int month, int year, String startingHour, String endingHour) {
+    public Event(Hall hall, double startingPrice, String nameEvent, String description, String type, int day, int month, int year, String startingHour, String endingHour) {
         this.hall = hall;
         this.startingPrice = startingPrice;
         this.nameEvent = nameEvent;
+        this.type = type;
         this.description = description;
 
         this.availableSeats = new char [hall.getRows()][hall.getColumns()];
@@ -31,6 +32,9 @@ public abstract class Event {
         this.endingHour = endingHour;
     }
 
+    public String getType() { return type; }
+
+    public void setType(String type) { this.type = type; }
     public Hall getHall() {
         return hall;
     }
@@ -95,14 +99,6 @@ public abstract class Event {
         this.startingPrice = startingPrice;
     }
 
-    public String getName() {
-        return nameEvent;
-    }
-
-    public void setName(String nameEvent) {
-        this.nameEvent = nameEvent;
-    }
-
     public int getDay() {
         return day;
     }
@@ -125,6 +121,10 @@ public abstract class Event {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public String toString(){
+        return nameEvent + " " + this.day + "." + this.month + "." + this.year;
     }
 
     public abstract double calculatePrice(String seat);
