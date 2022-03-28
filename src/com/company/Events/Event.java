@@ -2,6 +2,8 @@ package com.company.Events;
 
 import com.company.Entities.Hall;
 
+import java.util.Comparator;
+
 public abstract class Event {
     protected Hall hall;
     protected double startingPrice;
@@ -147,3 +149,4 @@ public abstract class Event {
     public abstract void presentation();
 
 }
+

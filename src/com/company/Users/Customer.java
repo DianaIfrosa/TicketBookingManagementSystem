@@ -8,20 +8,18 @@ import com.company.Tickets.ConcertTicket;
 import com.company.Tickets.TheatrePlayTicket;
 import com.company.Tickets.Ticket;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Customer {
     //singleton (lazy initialization) because it refers to current user
     public static Customer customer;
     private List<String> favorites;
-    private List<Ticket> futureTickets, oldTickets; //when a show is over the corresponding ticket goes to oldTickets section
+    private TreeSet<Ticket > futureTickets, oldTickets; //when a show is over the corresponding ticket goes to oldTickets section
 
     private Customer(){
         favorites = new ArrayList<String>();
-        futureTickets=new ArrayList<Ticket>();
-        oldTickets=new ArrayList<Ticket>();
+        futureTickets = new TreeSet<Ticket>(new TicketNameComp());
+        oldTickets = new TreeSet<Ticket>(new TicketNameComp());
     }
     public static Customer getCustomer() {
         if (customer == null)
@@ -150,6 +148,11 @@ public class Customer {
 
         for(int i=0; i<seats.size(); i++) {
             letter = seats.get(i).charAt(0);
+            if(seats.get(i).length() <= 1) {
+                System.out.println("\nSomething went wrong. Please try again!");
+                return;
+            }
+
             number = Integer.parseInt(seats.get(i).substring(1)) - 1;
 
             if (number < 0 || number >= event.getHall().getRows()) {
@@ -194,6 +197,7 @@ public class Customer {
                 t = new TheatrePlayTicket(seats.get(i), price, event);
 
             futureTickets.add(t);
+
         }
         // mark seats as purchased
         int initialAvailableSeats = event.getNoAvailableSeats();
@@ -222,8 +226,6 @@ public class Customer {
         else if (futureTickets.size() == 0)
             System.out.println("None");
         else{
-            //TODO sorteaza futureTickets dupa denumire
-
             for (Ticket ticket : futureTickets) {
                 ticket.print();
                 System.out.println();
@@ -239,7 +241,6 @@ public class Customer {
         else if (oldTickets.size() == 0)
             System.out.println("None");
         else {
-            //TODO sorteaza oldTickets dupa denumire
             for (Ticket ticket : oldTickets) {
                 ticket.print();
                 System.out.println();
@@ -282,5 +283,17 @@ public class Customer {
         }
         else
             return false;
+    }
+}
+
+class TicketNameComp implements Comparator<Ticket> {
+
+    @Override
+    public int compare(Ticket t1, Ticket t2) {
+        int res = t1.getEvent().getNameEvent().compareTo(t2.getEvent().getNameEvent());
+        if (res != 0)
+            return res;
+        else
+            return t1.getSeat().compareTo(t2.getSeat());
     }
 }

@@ -16,7 +16,7 @@ public class TheatrePlayTicket extends Ticket{
         System.out.println("Seat: " + seat + ", price: " + price + "$");
 
         if(event instanceof TheatrePlay) {  //downcasting
-            System.out.println(((TheatrePlay) event).getHasIntermission());
+            System.out.println("Has intermission: " + ((TheatrePlay) event).getHasIntermission());
         }
     }
 }
