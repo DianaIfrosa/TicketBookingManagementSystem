@@ -23,14 +23,12 @@ public class Registration {
         System.out.print("Please enter password:");
         String pass = scanner.next();
 
-        if(username.equals(correctNameC) && pass.equals(correctPassC)) {
-            System.out.println("Success!");
+        if(username.equals(correctNameC) && pass.equals(correctPassC))
             return 1;
-        }
-        if(username.equals(correctNameA) && pass.equals(correctPassA)) {
-            System.out.println("Success!");
+
+        if(username.equals(correctNameA) && pass.equals(correctPassA))
             return 2;
-        }
+
         System.out.println("Login failed! Please try again!\n");
         return 0;
     }
@@ -41,6 +39,7 @@ public class Registration {
 
     public void signUpCustomer(Scanner scanner)
     {
+        //TODO ADAUGARE USER
         System.out.print("Enter your username: ");
         String username = scanner.next();
         System.out.print("Enter your password: ");
@@ -52,7 +51,7 @@ public class Registration {
     }
     public void signUpAdmin(Scanner scanner)
     {
-        //TODO CITIRE DIN FISIER UN COD PE CARE SA IL FOLOSEASCA CA SA SE VF CA E ADMIN SI ADAUGARE USER
+        //TODO ADAUGARE USER
         System.out.print("Enter your ID: ");
         String id = scanner.next();
         System.out.print("Enter your password: ");

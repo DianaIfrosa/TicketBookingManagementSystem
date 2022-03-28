@@ -20,20 +20,22 @@ public class CustomerService implements ServiceInterface{
     }
     public void showOptions(Scanner scanner) {
 
-        System.out.println("1. See future events");
-        System.out.println("2. Search for events using date");
-        System.out.println("3. Search for tickets based on my budget");
-        System.out.println("4. Buy tickets for a specific event");
-        System.out.println("5. Show purchased tickets");
-        System.out.println("6. Show previously events I attented");
-        System.out.println("7. My Favorites list");
-        System.out.println("8. Add to My Favorites");
-        System.out.println("9. Delete from My Favorites");
-        System.out.println("10. See details of an event");
-        System.out.println("11. Log out");
-
         while (true) {
+            System.out.println("\n-----------Customer menu-----------");
+            System.out.println("1. See future events");
+            System.out.println("2. Search for events using date");
+            System.out.println("3. Search for tickets based on my budget");
+            System.out.println("4. Buy tickets for a specific event");
+            System.out.println("5. Show purchased tickets");
+            System.out.println("6. Show previously events I attented");
+            System.out.println("7. My Favorites list");
+            System.out.println("8. Add to My Favorites");
+            System.out.println("9. Delete from My Favorites");
+            System.out.println("10. See details of an event");
+            System.out.println("11. Log out");
+
             System.out.print("Your option: ");
+
             int option = scanner.nextInt();
             if (verifyOption(option)) {
                 if (option == 1) {
@@ -57,7 +59,14 @@ public class CustomerService implements ServiceInterface{
                     int budget = scanner.nextInt();
                     customer.searchUsingBudget(budget);
                 }
-                else if (option == 4); //TODO
+                else if (option == 4){
+                    System.out.println("\n-----------Buy tickets-----------");
+                    System.out.print("Type the event ID you would like to attend. If you need to see the events again please type 0 and you will go back to the main menu.\n" +
+                                       "Your choice: ");
+                    int ID = scanner.nextInt();
+                    System.out.println();
+                    customer.buyTickets(ID, scanner);
+                }
                 else if (option == 5) {
                     System.out.println("\n-----------See purchased tickets-----------");
                     customer.showPurchasedTickets();

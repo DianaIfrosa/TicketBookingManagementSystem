@@ -1,11 +1,16 @@
 package com.company.Users;
 
 import com.company.Entities.Building;
+import com.company.Events.Concert;
 import com.company.Events.Event;
+import com.company.Events.TheatrePlay;
+import com.company.Tickets.ConcertTicket;
+import com.company.Tickets.TheatrePlayTicket;
 import com.company.Tickets.Ticket;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Customer {
     //singleton (lazy initialization) because it refers to current user
@@ -69,6 +74,134 @@ public class Customer {
         System.out.println();
     }
 
+    public void buyTickets(int ID, Scanner scanner)
+    {
+        if (ID == 0) return; //go back to main menu
+        ID -= 1;
+        Building building = Building.getBuilding();
+        List<Event> events = building.getIncomingEvents();
+        if (events == null)
+            System.out.println("There are no events available!");
+        else if (ID < events.size() && ID >= 0)
+        {
+            Event event = events.get(ID);
+            System.out.println("How many tickets do you want to buy?");
+            int noTickets = scanner.nextInt();
+            if(event.getNoAvailableSeats() == 0) {
+                System.out.println("Sorry! This event is sold out.");
+                return;
+            }
+            if(event.getNoAvailableSeats() < noTickets) {
+                System.out.println("Sorry! We only have " + event.getNoAvailableSeats() + " left. Do you want those (yes/no)?");
+                List<String> seatsChosen= new ArrayList<String>();
+                while(true) {
+                    String ans = scanner.next();
+                    if (ans.equalsIgnoreCase("no"))
+                        return;
+                    if (ans.equalsIgnoreCase("yes")) {
+                        Ticket t = null;
+                        char[][] seats = event.getAvailableSeats();
+                        for(int i=0; i<event.getHall().getRows(); i++)
+                            for(int j=0; j<event.getHall().getColumns(); j++)
+                                if(seats[i][j] == 'O') {
+                                    //buy the ticket
+                                    StringBuilder seat= new StringBuilder();
+                                    char letter = (char)(j + 'A');
+                                    seat.append(letter);
+                                    seat.append((i+1));
+
+                                    String seatString = seat.toString();
+                                    seatsChosen.add(seatString);
+                                }
+                        this.buySpecificSeats(seatsChosen, event, scanner);
+                        break;
+                    }
+                    else
+                        System.out.println("Please type a valid answer!");
+                }
+            }
+            else{
+                System.out.println("Choose from these options. 'O' means free, 'X' means taken.\n");
+                event.showAvailableSeats();
+                List<Ticket> tickets = new ArrayList<Ticket>();
+                List<String> seats = new ArrayList<String>();
+
+                System.out.println("\nYour seats (such as A13, D5):");
+                for(int i=0; i<noTickets; i++) {
+                    System.out.print("Choice no. " + (i+1) + ": ");
+                    String ans = scanner.next();
+                    seats.add(ans);
+                }
+
+                this.buySpecificSeats(seats, event, scanner);
+                }
+            }
+        else
+            System.out.println("ID is not valid. Please try again!");
+    }
+
+
+    private void buySpecificSeats(List<String>seats, Event event, Scanner scanner){
+        double price, total = 0;
+        char letter;
+        int number;
+
+        System.out.print("Prices: ");
+
+        for(int i=0; i<seats.size(); i++) {
+            letter = seats.get(i).charAt(0);
+            number = Integer.parseInt(seats.get(i).substring(1)) - 1;
+
+            if (number < 0 || number >= event.getHall().getRows()) {
+                System.out.println("\nSomething went wrong. Please try again!");
+                return;
+            }
+            if (letter - 'A' < 0 || letter - 'A' >= event.getHall().getColumns()){
+                System.out.println("\nSomething went wrong. Please try again!");
+                return;
+            }
+            if ((event.getAvailableSeats())[number][letter - 'A'] == 'X') {
+                System.out.println("\nYou selected a taken seat. Please try again!");
+                return;
+            }
+
+            price = event.calculatePrice(seats.get(i));
+            total += price;
+            System.out.print(price + "$ ");
+        }
+
+        System.out.println("\nTotal: " + total + "$");
+        System.out.println("Do you agree? (yes/no)");
+        while(true) {
+            String ans = scanner.next();
+            if (ans.equalsIgnoreCase("no"))
+                return;
+            if (ans.equalsIgnoreCase("yes"))
+                break;
+            else
+                System.out.println("Please type a valid answer!");
+        }
+        for(int i=0; i<seats.size(); i++) {
+            letter = seats.get(i).charAt(0);
+            number = Integer.parseInt(seats.get(i).substring(1)) - 1;
+            Ticket t = null;
+            event.markSeat(number, letter - 'A');
+            price = event.calculatePrice(seats.get(i));
+            if (event instanceof  Concert)
+                t = new ConcertTicket(seats.get(i), price, event);
+
+            else if(event instanceof TheatrePlay)
+                t = new TheatrePlayTicket(seats.get(i), price, event);
+
+            futureTickets.add(t);
+        }
+        // mark seats as purchased
+        int initialAvailableSeats = event.getNoAvailableSeats();
+        event.setNoAvailableSeats(initialAvailableSeats - seats.size());
+
+        System.out.println("Done!");
+    }
+
     public void seeAnEvent(int ID) {
         ID -= 1;
         Building building = Building.getBuilding();
@@ -116,7 +249,7 @@ public class Customer {
     }
 
     public void showFavorites() {
-        System.out.println("There are your favorite events :)");
+        System.out.println("These are your favorite events :)");
         if (favorites == null)
             System.out.println("None");
         else if (favorites.size() == 0)

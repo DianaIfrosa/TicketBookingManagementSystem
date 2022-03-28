@@ -5,6 +5,10 @@ import com.company.Events.Event;
 
 public class ConcertTicket extends Ticket{
 
+    public ConcertTicket(String seat, double price, Event event) {
+        super(seat, price, event);
+    }
+
     public void print(){
         System.out.println(event.getNameEvent());
         System.out.println("Date and hours " + event.getDay() + "." + event.getMonth() + "." +

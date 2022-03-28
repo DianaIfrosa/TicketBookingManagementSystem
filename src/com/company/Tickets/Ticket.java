@@ -7,6 +7,13 @@ public abstract class Ticket {
     protected double price;
     protected Event event; // reference to Concert object or TheatrePlay object
 
+    public Ticket(){}
+    public Ticket(String seat, double price, Event event) {
+        this.seat = seat;
+        this.price = price;
+        this.event = event;
+    }
+
     public String getSeat() {
         return seat;
     }

@@ -7,9 +7,9 @@ public abstract class Event {
     protected double startingPrice;
     protected String nameEvent, description, type;
     protected char[][] availableSeats; //marked with X as taken and O as free
+    protected int noAvailableSeats;
     protected int day, month, year; //date
     protected String startingHour, endingHour;
-    protected String[] feedback; // from customers
 
     public Event(){}
 
@@ -30,11 +30,35 @@ public abstract class Event {
         this.year = year;
         this.startingHour = startingHour;
         this.endingHour = endingHour;
+
+        this.noAvailableSeats = hall.getSeatsNumber();
+    }
+
+    public void showAvailableSeats() {
+        System.out.print("  ");
+        for(int i=0 ; i<hall.getColumns(); i++)
+            System.out.print((char)('A' + i) + " ");
+        System.out.println();
+        for(int i=0 ; i<hall.getRows(); i++) {
+            System.out.print((i + 1) + " ");
+            for (int j = 0; j < hall.getColumns(); j++)
+                System.out.print(availableSeats[i][j] + " ");
+            System.out.println();
+        }
+    }
+
+    public void markSeat(int i, int j) {
+        availableSeats[i][j] = 'X';
     }
 
     public String getType() { return type; }
 
     public void setType(String type) { this.type = type; }
+
+    public int getNoAvailableSeats() { return noAvailableSeats; }
+
+    public void setNoAvailableSeats(int noAvailableSeats) { this.noAvailableSeats = noAvailableSeats; }
+
     public Hall getHall() {
         return hall;
     }
@@ -81,14 +105,6 @@ public abstract class Event {
 
     public void setEndingHour(String endingHour) {
         this.endingHour = endingHour;
-    }
-
-    public String[] getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(String[] feedback) {
-        this.feedback = feedback;
     }
 
     public double getStartingPrice() {

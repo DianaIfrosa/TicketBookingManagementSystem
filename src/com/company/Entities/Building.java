@@ -8,9 +8,9 @@ public class Building {
     //singleton (early initialization)
     public static final Building building = new Building();
 
-    private String name = "CompanyName"; // TODO read from file
+    private String name = "HappyTickets"; // TODO read from file
     private String address = "Street no. 5, West";  // TODO read from file
-    private Map<String, String> openHours = Map.of("Monday", "10-18");
+    private Map<String, String> openHours = Map.of("Monday", "10-18", "Tuesday", "11-18");
     private List<Hall> halls; //TODO take from file
     private List<Event> futureEvents, pastEvents;
 
@@ -37,7 +37,7 @@ public class Building {
         System.out.println("Address: " + address);
         System.out.println("Opening hours:");
         for (Map.Entry mapElement : openHours.entrySet()) {
-            System.out.print(mapElement.getKey() + ": " +  mapElement.getValue());
+            System.out.print(mapElement.getKey() + ": " +  mapElement.getValue() + "  ");
         }
         System.out.println();
     }

@@ -23,10 +23,10 @@ public class Main {
         Registration registration = Registration.getRegistration();
 
         //MOCK DATA TODO read from files
-        Hall hall1 = new Hall("Hall1", 0, 30, true, 6, 5);
-        Hall hall2 = new Hall("Hall2", 1, 40, true, 6, 7 );
-        Hall hall3 = new Hall("Hall3", 2, 36, true, 5, 8);
-        Hall hall4 = new Hall("Hall4", 2, 20, false, 5, 4);
+        Hall hall1 = new Hall("Hall1", 0, true, 6, 5);
+        Hall hall2 = new Hall("Hall2", 1, true, 6, 7 );
+        Hall hall3 = new Hall("Hall3", 2, true, 5, 8);
+        Hall hall4 = new Hall("Hall4", 2, false, 5, 4);
 
         List<Hall> listHalls = new ArrayList<Hall>();
         listHalls.add(hall1);
@@ -79,7 +79,6 @@ public class Main {
             int type = registration.logIn(scanner);
             if (type == 1) {
                 //customer
-                System.out.println("\n-----------Customer menu-----------");
                 Customer customer = Customer.getCustomer();
                 CustomerService customerS = CustomerService.getCustomerService(customer);
                 customerS.showOptions(scanner);
@@ -87,7 +86,6 @@ public class Main {
             }
             else if (type == 2) {
                 //administrator
-                System.out.println("\n-----------Administrator menu-----------");
                 Administrator administrator = Administrator.getAdministrator();
                 AdminService adminS = AdminService.getAdminService(administrator);
                 adminS.showOptions(scanner);

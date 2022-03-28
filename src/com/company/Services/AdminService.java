@@ -20,12 +20,14 @@ public class AdminService implements ServiceInterface{
     }
     @Override
     public void showOptions(Scanner scanner) {
-        System.out.println("1. See all events");
-        System.out.println("2. Add event");
-        System.out.println("3. Delete event");
-        System.out.println("4. Log out");
 
         while(true) {
+            System.out.println("\n-----------Administrator menu-----------");
+            System.out.println("1. See all events");
+            System.out.println("2. Add event");
+            System.out.println("3. Delete event");
+            System.out.println("4. Log out");
+
             System.out.print("Your option: ");
             int option = scanner.nextInt();
             if (verifyOption(option)) {
@@ -35,7 +37,7 @@ public class AdminService implements ServiceInterface{
                 }
                 else if (option == 2) {
                     System.out.println("\n-----------Add event-----------");
-                    admin.addEvent(scanner); //TODO CREATE EVENT
+                    admin.addEvent(scanner);
                 }
                 else if (option == 3) {
                     System.out.println("\n-----------Delete event-----------");

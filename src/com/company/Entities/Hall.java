@@ -5,18 +5,19 @@ import java.util.*;
 public class Hall {
     private String name; //identifier
     private int floor;
-    private int seatsNumber; //TODO SOLDOUT EVENT
+    private int seatsNumber;
     private boolean available = true; //a hall will be marked as unavailable if it is not suitable for an event at that moment
     private int rows, columns; //for the seats matrix
 
     public Hall(){}
-    public Hall(String name, int floor, int seatsNumber, boolean available, int rows, int columns) {
+    public Hall(String name, int floor, boolean available, int rows, int columns) {
         this.name = name;
         this.floor = floor;
-        this.seatsNumber = seatsNumber;
         this.available = available;
         this.rows = rows;
         this.columns = columns;
+
+        this.seatsNumber = rows * columns;
     }
 
     public String getName() {
