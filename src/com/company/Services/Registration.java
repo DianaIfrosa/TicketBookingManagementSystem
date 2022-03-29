@@ -2,7 +2,7 @@ package com.company.Services;
 
 import java.util.Scanner;
 
-public class Registration {
+public class Registration implements IRegistration{
     //singleton (early initialization)
     public static final Registration registration = new Registration();
 
@@ -33,7 +33,7 @@ public class Registration {
         return 0;
     }
 
-    public static void logOut(){
+    public void logOut(){
         System.out.println("Goodbye!");
     }
 
@@ -61,5 +61,4 @@ public class Registration {
 
         //TODO WRITE TO ADMIN FILE
     }
-
 }

@@ -48,8 +48,5 @@ public class Concert extends Event{
         System.out.println("Is it a standing concert: " + this.standing);
         System.out.println("Starting price: " + this.startingPrice  + "$");
     }
-
-
-
 }
 

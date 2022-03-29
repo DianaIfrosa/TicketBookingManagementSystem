@@ -4,7 +4,7 @@ import com.company.Users.Administrator;
 
 import java.util.Scanner;
 
-public class AdminService implements ServiceInterface{
+public class AdminService implements IService {
     //singleton (lazy initialization)
     Administrator admin;
     public static AdminService adminService;
@@ -18,16 +18,19 @@ public class AdminService implements ServiceInterface{
         }
         return adminService;
     }
+    public void showMenu() {
+        System.out.println("\n-----------Administrator menu-----------");
+        System.out.println("1. See all events");
+        System.out.println("2. Add event");
+        System.out.println("3. Delete event");
+        System.out.println("4. Log out");
+    }
+
     @Override
-    public void showOptions(Scanner scanner) {
+    public void useMenu(Scanner scanner) {
 
         while(true) {
-            System.out.println("\n-----------Administrator menu-----------");
-            System.out.println("1. See all events");
-            System.out.println("2. Add event");
-            System.out.println("3. Delete event");
-            System.out.println("4. Log out");
-
+            showMenu();
             System.out.print("Your option: ");
             int option = scanner.nextInt();
             if (verifyOption(option)) {
@@ -45,7 +48,7 @@ public class AdminService implements ServiceInterface{
                 }
                 else if (option == 4) {
                     System.out.println("\n-----------Logout-----------");
-                    Registration.logOut();
+                    Registration.getRegistration().logOut();
                     break;
                 }
             }

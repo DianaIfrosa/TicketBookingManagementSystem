@@ -2,7 +2,7 @@ package com.company.Tickets;
 
 import com.company.Events.Event;
 
-public abstract class Ticket {
+public abstract class Ticket implements Comparable<Ticket>{
     protected String seat; // e.g. A14 or C1 or null for standing event
     protected double price;
     protected Event event; // reference to Concert object or TheatrePlay object
@@ -39,4 +39,13 @@ public abstract class Ticket {
     }
 
     public abstract void print();
+
+
+    public int compareTo(Ticket ticket) {
+        int compareResult = this.getEvent().getNameEvent().compareTo(ticket.getEvent().getNameEvent());
+        if (compareResult == 0)
+            return this.getSeat().compareTo(ticket.getSeat());
+        else
+            return compareResult;
+    }
 }

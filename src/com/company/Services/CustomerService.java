@@ -1,10 +1,13 @@
 package com.company.Services;
 
+import com.company.Entities.Theatre;
+import com.company.Events.Event;
 import com.company.Users.Customer;
 
+import java.util.List;
 import java.util.Scanner;
 
-public class CustomerService implements ServiceInterface{
+public class CustomerService implements IService {
     //singleton (lazy initialization)
     Customer customer;
     public static CustomerService customerService;
@@ -18,29 +21,33 @@ public class CustomerService implements ServiceInterface{
         }
         return customerService;
     }
-    public void showOptions(Scanner scanner) {
+
+    public void showMenu() {
+        System.out.println("\n-----------Customer menu-----------");
+        System.out.println("1. See future events");
+        System.out.println("2. Search for events using date");
+        System.out.println("3. Search for tickets based on my budget");
+        System.out.println("4. Buy tickets for a specific event");
+        System.out.println("5. Show purchased tickets");
+        System.out.println("6. Show previously events I attented");
+        System.out.println("7. My Favorites list");
+        System.out.println("8. Add to My Favorites");
+        System.out.println("9. Delete from My Favorites");
+        System.out.println("10. See details of an event");
+        System.out.println("11. Log out");
+    }
+
+    public void useMenu(Scanner scanner) {
 
         while (true) {
-            System.out.println("\n-----------Customer menu-----------");
-            System.out.println("1. See future events");
-            System.out.println("2. Search for events using date");
-            System.out.println("3. Search for tickets based on my budget");
-            System.out.println("4. Buy tickets for a specific event");
-            System.out.println("5. Show purchased tickets");
-            System.out.println("6. Show previously events I attented");
-            System.out.println("7. My Favorites list");
-            System.out.println("8. Add to My Favorites");
-            System.out.println("9. Delete from My Favorites");
-            System.out.println("10. See details of an event");
-            System.out.println("11. Log out");
-
+            this.showMenu();
             System.out.print("Your option: ");
 
             int option = scanner.nextInt();
             if (verifyOption(option)) {
                 if (option == 1) {
                     System.out.println("\n-----------Future events-----------");
-                    customer.seeFutureEvents();
+                    seeFutureEvents();
                 }
                 else if (option == 2) {
                     System.out.println("\n-----------Search using date-----------");
@@ -51,13 +58,13 @@ public class CustomerService implements ServiceInterface{
                     int month = scanner.nextInt();
                     System.out.print("Year: ");
                     int year = scanner.nextInt();
-                    customer.searchUsingDate(day, month, year);
+                    searchUsingDate(day, month, year);
                 }
                 else if (option == 3) {
                     System.out.println("\n-----------Search based on budget-----------");
                     System.out.print("Please enter your maximum budget:");
                     int budget = scanner.nextInt();
-                    customer.searchUsingBudget(budget);
+                    searchUsingBudget(budget);
                 }
                 else if (option == 4){
                     System.out.println("\n-----------Buy tickets-----------");
@@ -87,7 +94,7 @@ public class CustomerService implements ServiceInterface{
                     while(true) {
                         String ans = scanner.next();
                         if (ans.equalsIgnoreCase("yes")) {
-                            customer.seeFutureEvents();
+                            seeFutureEvents();
                             break;
                         }
                         else if (ans.equalsIgnoreCase("no"))
@@ -99,8 +106,9 @@ public class CustomerService implements ServiceInterface{
                         else
                             System.out.println("Type yes or no!");
                     }
-                    if (exit == true)
+                    if (exit)
                         continue;
+
                     System.out.print("Your show ID:");
                     int id = scanner.nextInt();
                     boolean ok = customer.addToFavs(id);
@@ -129,8 +137,9 @@ public class CustomerService implements ServiceInterface{
                         else
                             System.out.println("Type yes or no!");
                     }
-                    if (exit == true)
+                    if (exit)
                         continue;
+
                     System.out.print("Your show ID:");
                     int id = scanner.nextInt();
                     boolean ok = customer.deleteFromFavs(id);
@@ -146,7 +155,7 @@ public class CustomerService implements ServiceInterface{
                     while(true) {
                         String ans = scanner.next();
                         if (ans.equalsIgnoreCase("yes")) {
-                            customer.seeFutureEvents();
+                            seeFutureEvents();
                             break;
                         }
                         else if (ans.equalsIgnoreCase("no"))
@@ -158,16 +167,16 @@ public class CustomerService implements ServiceInterface{
                         else
                             System.out.println("Type yes or no!");
                     }
-                    if (exit == true)
+                    if (exit)
                         continue;
 
                     System.out.print("Please enter the ID of the event you want to see: ");
                     int ID = scanner.nextInt();
-                    customer.seeAnEvent(ID);
+                    seeAnEvent(ID);
                 }
                 else if (option == 11) {
                     System.out.println("\n-----------Logout-----------");
-                    Registration.logOut();
+                    Registration.getRegistration().logOut();
                     break;
                 }
             }
@@ -175,6 +184,69 @@ public class CustomerService implements ServiceInterface{
                 System.out.println("Enter a valid option please!");
         }
     }
+
+    private void searchUsingDate(int day, int month, int year) {
+        Theatre theatre = Theatre.getTheatre();
+        List<Event> events = theatre.getIncomingEvents();
+        System.out.println("These events are what you're looking for:");
+        if(events == null)
+            System.out.println("No events found");
+        else if(events.size() == 0)
+            System.out.println("No events found");
+        else {
+            boolean found = false;
+            for (int i = 0; i < events.size(); i++)
+                if ((events.get(i).getDay() == day || day == 0) && (events.get(i).getMonth() == month || month == 0) && (events.get(i).getYear() == year || year == 0)) {
+                    System.out.println((i + 1) + ". " + events.get(i));
+                    found = true;
+                }
+            if (found == false)
+                System.out.println("No events found!");
+        }
+        System.out.println();
+    }
+
+    public void searchUsingBudget(int budget) {
+        Theatre theatre = Theatre.getTheatre();
+        List<Event> events = theatre.getIncomingEvents();
+
+        System.out.println("These events are suitable for your budget:");
+        if(events == null)
+            System.out.println("No events found");
+        else if(events.size() == 0)
+            System.out.println("No events found");
+        else {
+            boolean found = false;
+            for (int i = 0; i < events.size(); i++)
+                if (events.get(i).getStartingPrice() <= budget) {
+                    System.out.println((i + 1) + ". " + events.get(i));
+                    found = true;
+                }
+            if(found == false)
+                System.out.println("No events found");
+        }
+        System.out.println();
+    }
+
+    public void seeFutureEvents() {
+        Theatre theatre = Theatre.getTheatre();
+        theatre.showFutureEvents();
+        System.out.println();
+    }
+
+    public void seeAnEvent(int ID) {
+        ID -= 1;
+        Theatre theatre = Theatre.getTheatre();
+        List<Event> events = theatre.getIncomingEvents();
+        if (events == null)
+            System.out.println("There is nothing to see!");
+        else if (ID>=0  && ID < events.size())
+            theatre.getIncomingEvents().get(ID).presentation();
+        else
+            System.out.println("Something went wrong! Try again!");
+        System.out.println();
+    }
+
     public boolean verifyOption(int option){
             return option <= 11 && option >= 1;
         }

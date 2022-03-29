@@ -4,9 +4,9 @@ import com.company.Events.Event;
 
 import java.util.*;
 
-public class Building {
+public class Theatre {
     //singleton (early initialization)
-    public static final Building building = new Building();
+    public static final Theatre theatre = new Theatre();
 
     private String name = "HappyTickets"; // TODO read from file
     private String address = "Street no. 5, West";  // TODO read from file
@@ -14,14 +14,14 @@ public class Building {
     private List<Hall> halls; //TODO take from file
     private List<Event> futureEvents, pastEvents;
 
-    private Building(){
+    private Theatre(){
         halls = new ArrayList<Hall>();
         futureEvents = new ArrayList<Event>();
         pastEvents = new ArrayList<Event>();
     }
 
-    public static Building getBuilding() {
-        return building;
+    public static Theatre getTheatre() {
+        return theatre;
     }
 
     public List<Event> getIncomingEvents() {
@@ -32,7 +32,7 @@ public class Building {
         this.futureEvents = incomingEvents;
     }
 
-    public void showBuildingInformation() {
+    public void showTheatreInformation() {
         System.out.println("Welcome to " + name + "! We are happy to see you here :)");
         System.out.println("Address: " + address);
         System.out.println("Opening hours:");
@@ -76,6 +76,7 @@ public class Building {
         else
             System.out.println("None\n");
     }
+
     public Hall[] hallsAvailable(int day, int month, int year) {
         Set<Hall> hallsSet = new HashSet<Hall>();
         for(Hall hall: halls)

@@ -1,6 +1,6 @@
 package com.company.Users;
 
-import com.company.Entities.Building;
+import com.company.Entities.Theatre;
 import com.company.Entities.Hall;
 import com.company.Events.Concert;
 import com.company.Events.Event;
@@ -22,7 +22,7 @@ public class Administrator {
 
     public void addEvent(Scanner scanner) {
         //TODO ADD TO FILE
-        Building building = Building.getBuilding();
+        Theatre theatre = Theatre.getTheatre();
 
         System.out.print("Enter event name: ");
         String eventName = scanner.next();
@@ -44,14 +44,15 @@ public class Administrator {
         int year = scanner.nextInt();
 
         System.out.print("Halls available: ");
-        Hall[] hallsAvailable = building.hallsAvailable(day, month, year);
+        Hall[] hallsAvailable = theatre.hallsAvailable(day, month, year);
         for(int i=0; i<hallsAvailable.length; i++)
-            System.out.println(i + ". " + hallsAvailable[i].getName());
+            System.out.println((i+1) + ". " + hallsAvailable[i].getName());
 
         System.out.print("Your hall option: ");
-        int noHall = scanner.nextInt();
+        int noHall = scanner.nextInt() - 1;
+
         if(noHall >= hallsAvailable.length || noHall < 0) {
-            System.out.println("Invalid hall! Please try again\n!");
+            System.out.println("Invalid hall! Please try again!\n");
             return;
         }
 
@@ -103,7 +104,7 @@ public class Administrator {
                 System.out.println("Please enter a valid option!");
         }
 
-        boolean ok = building.addEvent(event);
+        boolean ok = theatre.addEvent(event);
         if(ok)
             System.out.println("Event added!\n");
         else
@@ -112,20 +113,20 @@ public class Administrator {
 
     public void deleteEvent(Scanner scanner){
         //TODO DELETE FROM FILE
-        Building building = Building.getBuilding();
-        building.showFutureEvents();
-        if (building.getIncomingEvents()!= null){
-            if(building.getIncomingEvents().size() == 0) {
+        Theatre theatre = Theatre.getTheatre();
+        theatre.showFutureEvents();
+        if (theatre.getIncomingEvents()!= null){
+            if(theatre.getIncomingEvents().size() == 0) {
             return;
             }
         }
-        else if (building.getIncomingEvents() == null)
+        else if (theatre.getIncomingEvents() == null)
             return;
 
         System.out.print("Enter the event ID you would like to delete: ");
         int ID = scanner.nextInt();
 
-        boolean ok = building.deleteEvent(ID);
+        boolean ok = theatre.deleteEvent(ID);
         if(ok)
             System.out.println("Event deleted!\n");
         else
@@ -133,8 +134,8 @@ public class Administrator {
     }
 
     public void seeFutureEvents() {
-        Building building = Building.getBuilding();
-        building.showFutureEvents();
+        Theatre theatre = Theatre.getTheatre();
+        theatre.showFutureEvents();
         System.out.println();
     }
 }

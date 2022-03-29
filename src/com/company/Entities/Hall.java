@@ -1,7 +1,5 @@
 package com.company.Entities;
 
-import java.util.*;
-
 public class Hall {
     private String name; //identifier
     private int floor;

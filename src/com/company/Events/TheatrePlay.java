@@ -30,7 +30,7 @@ public class TheatrePlay extends Event{
         //front seats are more expensive
         total += EXTRA_PRICE * (hall.getRows() - row);
         //middle seats are more expensive
-        if (number >= hall.getColumns()*(1/3) && number <= hall.getColumns()*2/3 )
+        if (number >= hall.getColumns()*(double)(1/3) && number <= hall.getColumns()*(double)(2/3))
             total += EXTRA_PRICE;
         return total;
     }
@@ -43,5 +43,4 @@ public class TheatrePlay extends Event{
         System.out.println("Does it have intermission: " + this.hasIntermission);
         System.out.println("Starting price: " + this.startingPrice + "$");
     }
-
 }
