@@ -43,7 +43,7 @@ public class Theatre {
     }
 
     public boolean addEvent(Event event){
-        //TODO IN ADMINISTRATOR READ INFO AND ADD TO FILE HERE
+        //TODO READ INFO AND ADD TO FILE HERE
         if(event != null) {
             this.futureEvents.add(event);
             return true; //done

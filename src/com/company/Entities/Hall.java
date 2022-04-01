@@ -4,7 +4,7 @@ public class Hall {
     private String name; //identifier
     private int floor;
     private int seatsNumber;
-    private boolean available = true; //a hall will be marked as unavailable if it is not suitable for an event at that moment
+    private boolean available = true;
     private int rows, columns; //for the seats matrix
 
     public Hall(){}

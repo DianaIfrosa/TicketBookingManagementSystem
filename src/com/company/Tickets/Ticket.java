@@ -40,7 +40,6 @@ public abstract class Ticket implements Comparable<Ticket>{
 
     public abstract void print();
 
-
     public int compareTo(Ticket ticket) {
         int compareResult = this.getEvent().getNameEvent().compareTo(ticket.getEvent().getNameEvent());
         if (compareResult == 0)

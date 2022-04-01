@@ -8,7 +8,7 @@ public abstract class Event {
     protected String nameEvent, description, type;
     protected char[][] availableSeats; //marked with X as taken and O as free
     protected int noAvailableSeats;
-    protected int day, month, year; //date
+    protected int day, month, year;
     protected String startingHour, endingHour;
 
     public Event(){}

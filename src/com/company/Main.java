@@ -81,14 +81,12 @@ public class Main {
             System.out.println("\n-----------Login-----------");
             int type = registration.logIn(scanner);
             if (type == 1) {
-                //customer
                 Customer customer = Customer.getCustomer();
                 CustomerService customerS = CustomerService.getCustomerService(customer);
                 customerS.useMenu(scanner);
                 break;
             }
             else if (type == 2) {
-                //administrator
                 Administrator administrator = Administrator.getAdministrator();
                 AdminService adminS = AdminService.getAdminService(administrator);
                 adminS.useMenu(scanner);
