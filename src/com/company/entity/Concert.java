@@ -1,8 +1,6 @@
-package com.company.Events;
+package com.company.entity;
 
-import com.company.Entities.Hall;
-
-public class Concert extends Event{
+public class Concert extends Event {
     private boolean standing; //whether it is with allocated seat or not
     final int EXTRA_PRICE = 10; //for calculating ticket price based on seat and starting from startingPrice
 
