@@ -1,11 +1,12 @@
-package com.company.Entities;
+package com.company.entity;
 
 public class Hall {
     private String name; //identifier
     private int floor;
     private int seatsNumber;
     private boolean available = true;
-    private int rows, columns; //for the seats matrix
+    private int rows; //for the seats matrix
+    private int columns; //for the seats matrix
 
     public Hall(){}
     public Hall(String name, int floor, boolean available, int rows, int columns) {
