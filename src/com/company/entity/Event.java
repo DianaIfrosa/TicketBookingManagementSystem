@@ -1,15 +1,18 @@
-package com.company.Events;
-
-import com.company.Entities.Hall;
+package com.company.entity;
 
 public abstract class Event {
     protected Hall hall;
     protected double startingPrice;
-    protected String nameEvent, description, type;
+    protected String nameEvent;
+    protected String description;
+    protected String type;
     protected char[][] availableSeats; //marked with X as taken and O as free
     protected int noAvailableSeats;
-    protected int day, month, year;
-    protected String startingHour, endingHour;
+    protected int day;
+    protected int month;
+    protected int year;
+    protected String startingHour;
+    protected String endingHour;
 
     public Event(){}
 
