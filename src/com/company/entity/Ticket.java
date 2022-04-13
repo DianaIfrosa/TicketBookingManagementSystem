@@ -1,6 +1,4 @@
-package com.company.Tickets;
-
-import com.company.Events.Event;
+package com.company.entity;
 
 public abstract class Ticket implements Comparable<Ticket>{
     protected String seat; // e.g. A14 or C1 or null for standing event
