@@ -1,6 +1,6 @@
-package com.company.Services;
+package com.company.service;
 
-import com.company.Users.Administrator;
+import com.company.user.Administrator;
 
 import java.util.Scanner;
 
