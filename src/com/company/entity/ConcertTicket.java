@@ -1,9 +1,6 @@
-package com.company.Tickets;
+package com.company.entity;
 
-import com.company.Events.Concert;
-import com.company.Events.Event;
-
-public class ConcertTicket extends Ticket{
+public class ConcertTicket extends Ticket {
 
     public ConcertTicket(String seat, double price, Event event) {
         super(seat, price, event);
