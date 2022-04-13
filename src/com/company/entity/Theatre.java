@@ -1,6 +1,4 @@
-package com.company.Entities;
-
-import com.company.Events.Event;
+package com.company.entity;
 
 import java.util.*;
 
@@ -12,12 +10,13 @@ public class Theatre {
     private String address = "Street no. 5, West";  // TODO read from file
     private Map<String, String> openHours = Map.of("Monday", "10-18", "Tuesday", "11-18");
     private List<Hall> halls; //TODO take from file
-    private List<Event> futureEvents, pastEvents;
+    private List<Event> futureEvents;
+    private List<Event> pastEvents;
 
     private Theatre(){
-        halls = new ArrayList<Hall>();
-        futureEvents = new ArrayList<Event>();
-        pastEvents = new ArrayList<Event>();
+        halls = new ArrayList<>();
+        futureEvents = new ArrayList<>();
+        pastEvents = new ArrayList<>();
     }
 
     public static Theatre getTheatre() {
@@ -51,15 +50,15 @@ public class Theatre {
         return false; //something went wrong
     }
 
-    public boolean deleteEvent(int ID){
+    public boolean deleteEvent(int id){
         //TODO REMOVE FROM FILES
-        ID -= 1;
+        id -= 1;
         if (futureEvents == null)
             return false;
         if (futureEvents.size() == 0)
             return false;
-        if (ID>=0 && ID<futureEvents.size()) {
-            futureEvents.remove(ID);
+        if (id>=0 && id<futureEvents.size()) {
+            futureEvents.remove(id);
             return true; //done
         }
         else return false;
@@ -78,7 +77,7 @@ public class Theatre {
     }
 
     public Hall[] hallsAvailable(int day, int month, int year) {
-        Set<Hall> hallsSet = new HashSet<Hall>();
+        Set<Hall> hallsSet = new HashSet<>();
         for(Hall hall: halls)
             if (hall.isAvailable())
                 hallsSet.add(hall);
