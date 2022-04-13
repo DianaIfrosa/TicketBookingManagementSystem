@@ -1,10 +1,10 @@
-package com.company.Users;
+package com.company.user;
 
-import com.company.Entities.Theatre;
-import com.company.Entities.Hall;
-import com.company.Events.Concert;
-import com.company.Events.Event;
-import com.company.Events.TheatrePlay;
+import com.company.entity.Theatre;
+import com.company.entity.Hall;
+import com.company.entity.Concert;
+import com.company.entity.Event;
+import com.company.entity.TheatrePlay;
 
 import java.util.Scanner;
 
@@ -124,9 +124,9 @@ public class Administrator {
             return;
 
         System.out.print("Enter the event ID you would like to delete: ");
-        int ID = scanner.nextInt();
+        int id = scanner.nextInt();
 
-        boolean ok = theatre.deleteEvent(ID);
+        boolean ok = theatre.deleteEvent(id);
         if(ok)
             System.out.println("Event deleted!\n");
         else
