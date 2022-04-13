@@ -1,12 +1,12 @@
-package com.company.Users;
+package com.company.user;
 
-import com.company.Entities.Theatre;
-import com.company.Events.Concert;
-import com.company.Events.Event;
-import com.company.Events.TheatrePlay;
-import com.company.Tickets.ConcertTicket;
-import com.company.Tickets.TheatrePlayTicket;
-import com.company.Tickets.Ticket;
+import com.company.entity.Theatre;
+import com.company.entity.Concert;
+import com.company.entity.Event;
+import com.company.entity.TheatrePlay;
+import com.company.entity.ConcertTicket;
+import com.company.entity.TheatrePlayTicket;
+import com.company.entity.Ticket;
 
 import java.util.*;
 
@@ -14,7 +14,8 @@ public class Customer {
     //singleton (lazy initialization) because it refers to current user
     public static Customer customer;
     private List<String> favorites;
-    private List<Ticket> futureTickets, oldTickets; //TODO (when adding files) when a show is over the corresponding ticket goes to oldTickets section
+    private List<Ticket> futureTickets;
+    private List<Ticket> oldTickets; //TODO (when adding files) when a show is over the corresponding ticket goes to oldTickets section
 
     private Customer(){
         favorites = new ArrayList<String>();
@@ -29,17 +30,17 @@ public class Customer {
         return customer;
     }
 
-    public void buyTickets(int ID, Scanner scanner)
+    public void buyTickets(int id, Scanner scanner)
     {
-        if (ID == 0) return; //go back to main menu
-        ID -= 1;
+        if (id == 0) return; //go back to main menu
+        id -= 1;
         Theatre theatre = Theatre.getTheatre();
         List<Event> events = theatre.getIncomingEvents();
         if (events == null)
             System.out.println("There are no events available!");
-        else if (ID < events.size() && ID >= 0)
+        else if (id < events.size() && id >= 0)
         {
-            Event event = events.get(ID);
+            Event event = events.get(id);
             System.out.println("How many tickets do you want to buy?");
             int noTickets = scanner.nextInt();
             if(event.getNoAvailableSeats() == 0) {
@@ -209,23 +210,23 @@ public class Customer {
         System.out.println();
     }
 
-    public boolean addToFavs(int ID){
-        ID -= 1;
+    public boolean addToFavs(int id){
+        id -= 1;
         List<Event> events = Theatre.getTheatre().getIncomingEvents();
-        if(ID>=0 && ID<events.size()) {
-            favorites.add(events.get(ID).getNameEvent());
+        if(id>=0 && id<events.size()) {
+            favorites.add(events.get(id).getNameEvent());
             return true;
         }
         else
             return false;
     }
 
-    public boolean deleteFromFavs(int ID){
-        ID -= 1;
+    public boolean deleteFromFavs(int id){
+        id -= 1;
         if(favorites == null)
             return false;
-        if(ID>=0 && ID<favorites.size()) {
-            favorites.remove(ID);
+        if(id>=0 && id<favorites.size()) {
+            favorites.remove(id);
             return true;
         }
         else
