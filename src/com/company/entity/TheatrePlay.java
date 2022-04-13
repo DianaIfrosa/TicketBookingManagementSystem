@@ -1,8 +1,6 @@
-package com.company.Events;
+package com.company.entity;
 
-import com.company.Entities.Hall;
-
-public class TheatrePlay extends Event{
+public class TheatrePlay extends Event {
     private boolean hasIntermission; //break(s), set to false by default
     final int EXTRA_PRICE = 8; //for calculating ticket price based on seat and starting from startingPrice
 
