@@ -1,10 +1,9 @@
-package com.company.service;
+package com.company.Services;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public interface IService {
    boolean verifyOption(int option);
-   void useMenu(Scanner scanner) throws IOException;
+   void useMenu(Scanner scanner);
    void showMenu();
 }

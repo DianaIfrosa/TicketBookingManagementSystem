@@ -1,16 +1,18 @@
-package com.company.entity;
+package com.company.Events;
 
-public class Concert extends Event {
-    private boolean standing; // whether it is with allocated seat or not
-    final int EXTRA_PRICE = 10; // for calculating ticket price based on seat and starting from startingPrice
+import com.company.Entities.Hall;
 
-    public Concert(int id, Hall hall, double startingPrice, String nameEvent, String description, int day, int month, int year, String startingHour, String endingHour, String type, boolean standing) {
-        super(id, hall, startingPrice, nameEvent, description, type,  day, month, year, startingHour, endingHour);
+public class Concert extends Event{
+    private boolean standing; //whether it is with allocated seat or not
+    final int EXTRA_PRICE = 10; //for calculating ticket price based on seat and starting from startingPrice
+
+    public Concert(Hall hall, double startingPrice, String nameEvent, String description, int day, int month, int year, String startingHour, String endingHour, String type, boolean standing) {
+        super(hall, startingPrice, nameEvent, description, type,  day, month, year, startingHour, endingHour);
         this.type = type;
         this.standing = standing;
     }
 
-    public boolean getStanding() {
+    public boolean isStanding() {
         return standing;
     }
 
@@ -26,14 +28,15 @@ public class Concert extends Event {
         if(!standing) {
             double total = this.startingPrice;
             char letter = seat.charAt(0);
+            int number = Integer.parseInt(seat.substring(1));
             int row = letter - 'A'; // 0,1,...
-            // front seats are more expensive
+            //front seats are more expensive
             total += EXTRA_PRICE * (hall.getRows() - row);
 
             return total;
         }
         else
-            // for standing concerts the price for everybody is the starting price
+            //for standing concerts the price for everybody is the starting price
             return this.startingPrice;
         }
     public void presentation(){

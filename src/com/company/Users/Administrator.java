@@ -1,21 +1,16 @@
-package com.company.user;
+package com.company.Users;
 
-import com.company.entity.Theatre;
-import com.company.entity.Hall;
-import com.company.entity.Concert;
-import com.company.entity.Event;
-import com.company.entity.TheatrePlay;
-import com.company.service.AuditService;
-import com.company.service.WriteService;
+import com.company.Entities.Theatre;
+import com.company.Entities.Hall;
+import com.company.Events.Concert;
+import com.company.Events.Event;
+import com.company.Events.TheatrePlay;
 
 import java.util.Scanner;
 
 public class Administrator {
-    // singleton (lazy initialization) because it refers to current user
+    //singleton (lazy initialization) because it refers to current user
     public static Administrator administrator;
-    private  int id;
-    private String username;
-    private String password;
 
     private Administrator() {}
     public static Administrator getAdministrator() {
@@ -26,6 +21,7 @@ public class Administrator {
     }
 
     public void addEvent(Scanner scanner) {
+        //TODO ADD TO FILE
         Theatre theatre = Theatre.getTheatre();
 
         System.out.print("Enter event name: ");
@@ -63,7 +59,7 @@ public class Administrator {
         System.out.println("Concert or play (c/p)? Type 'e' for exit");
         Event event;
         while(true) {
-            char typeEvent = scanner.next().charAt(0); // concert or play
+            char typeEvent = scanner.next().charAt(0); //concert or play
             if(typeEvent == 'c') {
                 boolean standing;
                 System.out.println("It is a standing one (yes/no)?");
@@ -80,9 +76,7 @@ public class Administrator {
                     else
                         System.out.println("Invalid option! Type yes or no.");
                     }
-
-                Theatre.noEvents++;
-                event = new Concert(Theatre.noEvents, hallsAvailable[noHall], startingPrice, eventName, description, day, month, year, startingHour, endingHour, type, standing);
+                event = new Concert(hallsAvailable[noHall], startingPrice, eventName, description, day, month, year, startingHour, endingHour, type, standing);
                 break;
             }
             else if (typeEvent == 'p') {
@@ -101,8 +95,7 @@ public class Administrator {
                 else
                     System.out.println("Invalid option! Type yes or no.");
                 }
-                Theatre.noEvents++;
-                event = new TheatrePlay(Theatre.noEvents, hallsAvailable[noHall], startingPrice, eventName, description, day, month, year, startingHour, endingHour, type, intermission);
+                event = new TheatrePlay(hallsAvailable[noHall], startingPrice, eventName, description, day, month, year, startingHour, endingHour, type, intermission);
                 break;
             }
             else if (typeEvent == 'e')
@@ -112,48 +105,30 @@ public class Administrator {
         }
 
         boolean ok = theatre.addEvent(event);
-        if(ok) {
-            WriteService.getWriteService().writeEvent(event);
-            AuditService.getAuditService().writeAudit("Admin id: " + id + " added event id: " + event.getEventId());
+        if(ok)
             System.out.println("Event added!\n");
-        }
         else
             System.out.println("Something went wrong! Try again!\n");
     }
 
     public void deleteEvent(Scanner scanner){
+        //TODO DELETE FROM FILE
         Theatre theatre = Theatre.getTheatre();
-
         theatre.showFutureEvents();
-        theatre.showPastEvents();
-
-        if (theatre.getFutureEvents()!= null){
-            if(theatre.getFutureEvents().size() == 0) {
+        if (theatre.getIncomingEvents()!= null){
+            if(theatre.getIncomingEvents().size() == 0) {
             return;
             }
         }
-        else if (theatre.getFutureEvents() == null)
+        else if (theatre.getIncomingEvents() == null)
             return;
 
         System.out.print("Enter the event ID you would like to delete: ");
-        int id = scanner.nextInt();
+        int ID = scanner.nextInt();
 
-        Event event = Theatre.theatre.findFutureEvent(id);
-        if (event == null)
-        {
-            event = Theatre.theatre.findPastEvent(id);
-            if (event == null) {
-                System.out.println("Event not found! Please try again!\n");
-                return;
-            }
-        }
-
-        boolean ok = theatre.deleteEvent(event);
-        if(ok) {
-            WriteService.getWriteService().deleteEvent(event);
-            AuditService.getAuditService().writeAudit("Admin id: " + id + " deleted event id: " + event.getEventId());
+        boolean ok = theatre.deleteEvent(ID);
+        if(ok)
             System.out.println("Event deleted!\n");
-        }
         else
             System.out.println("Something went wrong! Try again!\n");
     }
@@ -162,31 +137,5 @@ public class Administrator {
         Theatre theatre = Theatre.getTheatre();
         theatre.showFutureEvents();
         System.out.println();
-    }
-
-    public void seePastEvents() {
-        Theatre theatre = Theatre.getTheatre();
-        theatre.showPastEvents();
-        System.out.println();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
