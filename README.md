@@ -49,10 +49,4 @@ Course: Advanced OOP.
 2. Log in
 3. Log out 
 
-### Login as:
-customer:  
-username: 123, password: ABC  
-admin:  
-username: 1234, password: ABCD  
-
 

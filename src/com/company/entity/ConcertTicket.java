@@ -12,8 +12,8 @@ public class ConcertTicket extends Ticket {
                           event.getYear()+ " " + event.getStartingHour() + "-" + event.getEndingHour());
 
         System.out.print("Seat: ");
-        if(event instanceof Concert) {  //downcasting
-           if(((Concert) event).isStanding())
+        if(event instanceof Concert) {  // downcasting
+           if(((Concert) event).getStanding())
                System.out.println("standing");
            else
                System.out.println(seat + ", price: " + price + "$");

@@ -1,12 +1,16 @@
 package com.company.entity;
 
-public abstract class Event {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class Event implements Comparable<Event>{
+    protected int eventId;
     protected Hall hall;
     protected double startingPrice;
     protected String nameEvent;
     protected String description;
     protected String type;
-    protected char[][] availableSeats; //marked with X as taken and O as free
+    protected List<List<Character>> availableSeats; // marked with X as taken and O as free
     protected int noAvailableSeats;
     protected int day;
     protected int month;
@@ -14,19 +18,24 @@ public abstract class Event {
     protected String startingHour;
     protected String endingHour;
 
+
     public Event(){}
 
-    public Event(Hall hall, double startingPrice, String nameEvent, String description, String type, int day, int month, int year, String startingHour, String endingHour) {
+    public Event(int eventId, Hall hall, double startingPrice, String nameEvent, String description, String type, int day, int month, int year, String startingHour, String endingHour) {
+        this.eventId = eventId;
         this.hall = hall;
         this.startingPrice = startingPrice;
         this.nameEvent = nameEvent;
         this.type = type;
         this.description = description;
 
-        this.availableSeats = new char [hall.getRows()][hall.getColumns()];
-        for(int i=0; i<hall.getRows(); i++)
-            for(int j=0; j<hall.getColumns(); j++)
-                availableSeats[i][j] = 'O'; //available sign
+        this.availableSeats = new ArrayList<>();
+        for(int i=0; i<hall.getRows(); i++) {
+            List<Character> aux = new ArrayList<>();
+            for (int j = 0; j < hall.getColumns(); j++)
+                aux.add('O'); // available sign
+            availableSeats.add(aux);
+        }
 
         this.day = day;
         this.month = month;
@@ -45,18 +54,26 @@ public abstract class Event {
         for(int i=0 ; i<hall.getRows(); i++) {
             System.out.print((i + 1) + " ");
             for (int j = 0; j < hall.getColumns(); j++)
-                System.out.print(availableSeats[i][j] + " ");
+                System.out.print(availableSeats.get(i).get(j) + " ");
             System.out.println();
         }
     }
 
     public void markSeat(int i, int j) {
-        availableSeats[i][j] = 'X';
+        List<Character> line = availableSeats.get(i);
+        line.set(j, 'X');
+        availableSeats.set(i, line);
     }
 
-    public String getType() { return type; }
+    public abstract double calculatePrice(String seat);
 
-    public void setType(String type) { this.type = type; }
+    public abstract void presentation();
+
+    @Override
+    public int compareTo(Event e) {
+        // sort ascending based on event name
+        return this.getNameEvent().compareTo(e.getNameEvent());
+    }
 
     public int getNoAvailableSeats() { return noAvailableSeats; }
 
@@ -74,80 +91,49 @@ public abstract class Event {
         return nameEvent;
     }
 
-    public void setNameEvent(String nameEvent) {
-        this.nameEvent = nameEvent;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public char[][] getAvailableSeats() {
+    public List<List<Character>> getAvailableSeats() {
         return availableSeats;
-    }
-
-    public void setAvailableSeats(char[][] availableSeats) {
-        this.availableSeats = availableSeats;
     }
 
     public String getStartingHour() {
         return startingHour;
     }
 
-    public void setStartingHour(String startingHour) {
-        this.startingHour = startingHour;
-    }
-
     public String getEndingHour() {
         return endingHour;
-    }
-
-    public void setEndingHour(String endingHour) {
-        this.endingHour = endingHour;
     }
 
     public double getStartingPrice() {
         return startingPrice;
     }
 
-    public void setStartingPrice(double startingPrice) {
-        this.startingPrice = startingPrice;
-    }
-
     public int getDay() {
         return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
     }
 
     public int getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
     public int getYear() {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public int getEventId() {
+        return eventId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String toString(){
         return nameEvent + " " + this.day + "-" + this.month + "-" + this.year;
     }
-
-    public abstract double calculatePrice(String seat);
-    public abstract void presentation();
-
 }
+
 

@@ -5,7 +5,7 @@ import com.company.user.Administrator;
 import java.util.Scanner;
 
 public class AdminService implements IService {
-    //singleton (lazy initialization)
+    // singleton (lazy initialization)
     Administrator admin;
     public static AdminService adminService;
 
@@ -27,7 +27,7 @@ public class AdminService implements IService {
     }
 
     @Override
-    public void useMenu(Scanner scanner) {
+    public void useMenu(Scanner scanner){
 
         while(true) {
             showMenu();
@@ -37,6 +37,8 @@ public class AdminService implements IService {
                 if (option == 1){
                     System.out.println("\n-----------Future events-----------");
                     admin.seeFutureEvents();
+                    System.out.println("\n-----------Past events-----------");
+                    admin.seePastEvents();
                 }
                 else if (option == 2) {
                     System.out.println("\n-----------Add event-----------");
@@ -48,7 +50,7 @@ public class AdminService implements IService {
                 }
                 else if (option == 4) {
                     System.out.println("\n-----------Logout-----------");
-                    Registration.getRegistration().logOut();
+                    Registration.getRegistration().logOut(Administrator.getAdministrator().getId(), Administrator.getAdministrator().getUsername());
                     break;
                 }
             }

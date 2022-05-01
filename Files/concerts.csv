@@ -1,0 +1,4 @@
+Event Id,Hall Name,Starting Price, Name Event,Description,Day,Month,Year,Starting Hour, Ending Hour, Type, Standing
+1,Hall1,30,Classical Moments,Beautiful concert,1,2,2022,18:00,20:00,classical,no
+2,Hall1,20.5,Folk times,Fun concert,2,8,2022,17:00,21:00,folk,yes
+7,Hall3,90,e,ee,4,5,2025,2,3,e,no

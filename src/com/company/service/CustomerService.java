@@ -4,11 +4,12 @@ import com.company.entity.Theatre;
 import com.company.entity.Event;
 import com.company.user.Customer;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class CustomerService implements IService {
-    //singleton (lazy initialization)
+    // singleton (lazy initialization)
     Customer customer;
     public static CustomerService customerService;
 
@@ -37,8 +38,7 @@ public class CustomerService implements IService {
         System.out.println("11. Log out");
     }
 
-    public void useMenu(Scanner scanner) {
-
+    public void useMenu(Scanner scanner) throws IOException {
         while (true) {
             this.showMenu();
             System.out.print("Your option: ");
@@ -176,7 +176,7 @@ public class CustomerService implements IService {
                 }
                 else if (option == 11) {
                     System.out.println("\n-----------Logout-----------");
-                    Registration.getRegistration().logOut();
+                    Registration.getRegistration().logOut(customer.getId(), customer.getUsername());
                     break;
                 }
             }
@@ -187,7 +187,7 @@ public class CustomerService implements IService {
 
     private void searchUsingDate(int day, int month, int year) {
         Theatre theatre = Theatre.getTheatre();
-        List<Event> events = theatre.getIncomingEvents();
+        List<Event> events = theatre.getFutureEvents();
         System.out.println("These events are what you're looking for:");
         if(events == null)
             System.out.println("No events found");
@@ -208,7 +208,7 @@ public class CustomerService implements IService {
 
     public void searchUsingBudget(int budget) {
         Theatre theatre = Theatre.getTheatre();
-        List<Event> events = theatre.getIncomingEvents();
+        List<Event> events = theatre.getFutureEvents();
 
         System.out.println("These events are suitable for your budget:");
         if(events == null)
@@ -237,11 +237,11 @@ public class CustomerService implements IService {
     public void seeAnEvent(int id) {
         id -= 1;
         Theatre theatre = Theatre.getTheatre();
-        List<Event> events = theatre.getIncomingEvents();
+        List<Event> events = theatre.getFutureEvents();
         if (events == null)
             System.out.println("There is nothing to see!");
         else if (id>=0  && id < events.size())
-            theatre.getIncomingEvents().get(id).presentation();
+            theatre.getFutureEvents().get(id).presentation();
         else
             System.out.println("Something went wrong! Try again!");
         System.out.println();
