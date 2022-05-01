@@ -1,15 +1,15 @@
 package com.company;
 
-import com.company.Entities.Theatre;
-import com.company.Entities.Hall;
-import com.company.Events.Concert;
-import com.company.Events.Event;
-import com.company.Events.TheatrePlay;
-import com.company.Services.AdminService;
-import com.company.Services.CustomerService;
-import com.company.Services.Registration;
-import com.company.Users.Administrator;
-import com.company.Users.Customer;
+import com.company.entity.Theatre;
+import com.company.entity.Hall;
+import com.company.entity.Concert;
+import com.company.entity.Event;
+import com.company.entity.TheatrePlay;
+import com.company.service.AdminService;
+import com.company.service.CustomerService;
+import com.company.service.Registration;
+import com.company.user.Administrator;
+import com.company.user.Customer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Main {
         Hall hall3 = new Hall("Hall3", 2, true, 5, 8);
         Hall hall4 = new Hall("Hall4", 2, false, 5, 4);
 
-        List<Hall> listHalls = new ArrayList<Hall>();
+        List<Hall> listHalls = new ArrayList<>();
         listHalls.add(hall1);
         listHalls.add(hall2);
         listHalls.add(hall3);
@@ -40,7 +40,7 @@ public class Main {
         Event event3 = new Concert(hall1, 20.5, "Folk times", "Fun concert", 2, 2, 2022, "17:00", "21:00", "folk", true);
         Event event4 = new TheatrePlay(hall3, 15, "A doll's house", "Captivating piece", 7, 3, 2022, "12:15", "14:00", "drama", true);
 
-        List<Event> events = new ArrayList<Event>();
+        List<Event> events = new ArrayList<>();
         events.add(event1);
         events.add(event2);
         events.add(event3);
