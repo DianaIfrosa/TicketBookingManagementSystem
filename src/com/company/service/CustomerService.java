@@ -1,14 +1,15 @@
-package com.company.Services;
+package com.company.service;
 
-import com.company.Entities.Theatre;
-import com.company.Events.Event;
-import com.company.Users.Customer;
+import com.company.entity.Theatre;
+import com.company.entity.Event;
+import com.company.user.Customer;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class CustomerService implements IService {
-    //singleton (lazy initialization)
+    // singleton (lazy initialization)
     Customer customer;
     public static CustomerService customerService;
 
@@ -37,8 +38,7 @@ public class CustomerService implements IService {
         System.out.println("11. Log out");
     }
 
-    public void useMenu(Scanner scanner) {
-
+    public void useMenu(Scanner scanner) throws IOException {
         while (true) {
             this.showMenu();
             System.out.print("Your option: ");
@@ -70,9 +70,9 @@ public class CustomerService implements IService {
                     System.out.println("\n-----------Buy tickets-----------");
                     System.out.print("Type the event ID you would like to attend. If you need to see the events again please type 0 and you will go back to the main menu.\n" +
                                        "Your choice: ");
-                    int ID = scanner.nextInt();
+                    int id = scanner.nextInt();
                     System.out.println();
-                    customer.buyTickets(ID, scanner);
+                    customer.buyTickets(id, scanner);
                 }
                 else if (option == 5) {
                     System.out.println("\n-----------See purchased tickets-----------");
@@ -171,12 +171,12 @@ public class CustomerService implements IService {
                         continue;
 
                     System.out.print("Please enter the ID of the event you want to see: ");
-                    int ID = scanner.nextInt();
-                    seeAnEvent(ID);
+                    int id = scanner.nextInt();
+                    seeAnEvent(id);
                 }
                 else if (option == 11) {
                     System.out.println("\n-----------Logout-----------");
-                    Registration.getRegistration().logOut();
+                    Registration.getRegistration().logOut(customer.getId(), customer.getUsername());
                     break;
                 }
             }
@@ -187,7 +187,7 @@ public class CustomerService implements IService {
 
     private void searchUsingDate(int day, int month, int year) {
         Theatre theatre = Theatre.getTheatre();
-        List<Event> events = theatre.getIncomingEvents();
+        List<Event> events = theatre.getFutureEvents();
         System.out.println("These events are what you're looking for:");
         if(events == null)
             System.out.println("No events found");
@@ -208,7 +208,7 @@ public class CustomerService implements IService {
 
     public void searchUsingBudget(int budget) {
         Theatre theatre = Theatre.getTheatre();
-        List<Event> events = theatre.getIncomingEvents();
+        List<Event> events = theatre.getFutureEvents();
 
         System.out.println("These events are suitable for your budget:");
         if(events == null)
@@ -234,14 +234,14 @@ public class CustomerService implements IService {
         System.out.println();
     }
 
-    public void seeAnEvent(int ID) {
-        ID -= 1;
+    public void seeAnEvent(int id) {
+        id -= 1;
         Theatre theatre = Theatre.getTheatre();
-        List<Event> events = theatre.getIncomingEvents();
+        List<Event> events = theatre.getFutureEvents();
         if (events == null)
             System.out.println("There is nothing to see!");
-        else if (ID>=0  && ID < events.size())
-            theatre.getIncomingEvents().get(ID).presentation();
+        else if (id>=0  && id < events.size())
+            theatre.getFutureEvents().get(id).presentation();
         else
             System.out.println("Something went wrong! Try again!");
         System.out.println();
