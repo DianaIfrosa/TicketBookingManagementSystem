@@ -105,8 +105,12 @@ public class Customer {
         letter = seat.charAt(0);
         if(seat.length() <= 1)
             return false;
-
-        number = Integer.parseInt(seat.substring(1)) - 1;
+        try {
+            number = Integer.parseInt(seat.substring(1)) - 1;
+        }
+        catch (NumberFormatException e) {
+           return false;
+        }
 
         if (number < 0 || number >= event.getHall().getRows())
             return false;
@@ -124,13 +128,18 @@ public class Customer {
         double price, total = 0;
         List<Double> prices = new ArrayList<>();
 
-        System.out.print("Prices: ");
+        // stream
+        Optional<String> wrongSeats = seats.stream()
+                .filter(s -> !verifySeat(s,event))
+                .findAny();
 
+        if (wrongSeats.isPresent()){
+            System.out.println("\nInvalid seat. Please try again!");
+            return;
+        }
+
+        System.out.print("Prices: ");
         for(String seat: seats) {
-            if(verifySeat(seat, event) == false) {
-                System.out.println("\nSomething went wrong. Please try again!");
-                return;
-            }
             price = event.calculatePrice(seat);
             total += price;
             prices.add(price);
@@ -150,18 +159,19 @@ public class Customer {
         }
 
         for(int i = 0; i < seats.size(); i++) {
-            char letter = seats.get(i).charAt(0);
-            int number = Integer.parseInt(seats.get(i).substring(1)) - 1;
+
             Ticket t = null;
-            event.markSeat(number, letter - 'A');
+            event.markSeat(seats.get(i));
             if (event instanceof  Concert)
                 t = new ConcertTicket(seats.get(i), prices.get(i), event);
 
             else if(event instanceof TheatrePlay)
                 t = new TheatrePlayTicket(seats.get(i), prices.get(i), event);
 
-            futureTickets.add(t);
-            WriteService.getWriteService().writeTicket(this.id, t);
+            if (t != null) {
+                futureTickets.add(t);
+                WriteService.getWriteService().writeTicket(this.id, t);
+            }
         }
 
         // mark seats as purchased
@@ -170,7 +180,15 @@ public class Customer {
         AuditService.getAuditService().writeAudit("Customer id: " + this.id + " bought " + seats.size()
                                                  + " ticket(s) for event id: " + event.getEventId());
 
-        Collections.sort(futureTickets);
+        // lambda expression for sort
+        futureTickets.sort((o1, o2) ->
+        {
+            int compareResult = o1.getEvent().getNameEvent().compareTo(o2.getEvent().getNameEvent());
+            if (compareResult == 0)
+                return o1.getSeat().compareTo(o2.getSeat());
+            else
+                return compareResult;
+        });
 
         System.out.println("Done!");
     }
@@ -223,14 +241,12 @@ public class Customer {
         if (event == null)
             return false;
 
-        boolean found = false;
-        for (Event e:favorites)
-            if (e.getEventId() == id) {
-                found = true;
-                break;
-            }
+        // stream
+        Optional<Event> eventsFound = favorites.stream()
+                .filter(e -> e.getEventId() == id)
+                .findAny();
 
-        if (found) {
+        if (eventsFound.isPresent()){
             System.out.println("This event is already in your favorites list!");
             return false;
         }

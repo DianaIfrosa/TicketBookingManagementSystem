@@ -59,10 +59,12 @@ public abstract class Event implements Comparable<Event>{
         }
     }
 
-    public void markSeat(int i, int j) {
-        List<Character> line = availableSeats.get(i);
-        line.set(j, 'X');
-        availableSeats.set(i, line);
+    public void markSeat(String seat) {
+        char letter = seat.charAt(0);
+        int number = Integer.parseInt(seat.substring(1)) - 1;
+        List<Character> line = availableSeats.get(number);
+        line.set(letter-'A', 'X');
+        availableSeats.set(number, line);
     }
 
     public abstract double calculatePrice(String seat);

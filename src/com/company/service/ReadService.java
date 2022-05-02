@@ -260,6 +260,7 @@ public class ReadService {
 
             List<Ticket> futureTickets = new ArrayList<>();
             List<Ticket> oldTickets = new ArrayList<>();
+            Event event;
 
             String line = buffer.readLine();
             char sep = ',';
@@ -274,9 +275,13 @@ public class ReadService {
                 if (fields.size() != 4)
                     throw new CustomException("Invalid file at path " + path);
 
+                // mark the seats from the tickets (from future events) as taken
+                event = Theatre.getTheatre().findFutureEvent(Integer.parseInt(fields.get(1)));
+                if (event != null)
+                    event.markSeat(fields.get(2));
+
                 if (fields.get(0).equals(String.valueOf(customerId))) // this is the customer I'm looking for
                 {
-                    Event event = Theatre.getTheatre().findFutureEvent(Integer.parseInt(fields.get(1)));
                     // categorize the event: future or past
                     if (event != null) { // future event
                          // categorize the event: concert or theatre play
