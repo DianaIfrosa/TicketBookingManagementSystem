@@ -29,7 +29,7 @@ public class CustomerService implements IService {
         System.out.println("2. Search for events using date");
         System.out.println("3. Search for tickets based on my budget");
         System.out.println("4. Buy tickets for a specific event");
-        System.out.println("5. Show purchased tickets");
+        System.out.println("5. Show purchased tickets for future events");
         System.out.println("6. Show previously events I attented");
         System.out.println("7. My Favorites list");
         System.out.println("8. Add to My Favorites");
@@ -75,7 +75,7 @@ public class CustomerService implements IService {
                     customer.buyTickets(id, scanner);
                 }
                 else if (option == 5) {
-                    System.out.println("\n-----------See purchased tickets-----------");
+                    System.out.println("\n-----------See purchased tickets for future events-----------");
                     customer.showPurchasedTickets();
                 }
                 else if (option == 6) {
@@ -235,15 +235,16 @@ public class CustomerService implements IService {
     }
 
     public void seeAnEvent(int id) {
-        id -= 1;
         Theatre theatre = Theatre.getTheatre();
         List<Event> events = theatre.getFutureEvents();
+        Event event = theatre.findFutureEvent(id);
         if (events == null)
             System.out.println("There is nothing to see!");
-        else if (id>=0  && id < events.size())
-            theatre.getFutureEvents().get(id).presentation();
+        else if (event == null)
+            System.out.println("Event not found! Try again!");
         else
-            System.out.println("Something went wrong! Try again!");
+            event.presentation();
+
         System.out.println();
     }
 

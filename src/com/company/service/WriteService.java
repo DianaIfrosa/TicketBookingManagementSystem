@@ -21,7 +21,7 @@ public class WriteService {
 
     public void addUser(int id, String username, String password, String path){
         try (BufferedWriter buffer = new BufferedWriter(new FileWriter(path, true))) {
-            buffer.write("\n" +id + "," + username + "," + password);
+            buffer.write("\n" + id + "," + username + "," + password);
             buffer.flush();
         } catch (IOException e) {
             System.out.println(e.getMessage());

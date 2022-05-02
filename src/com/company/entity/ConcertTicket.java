@@ -13,10 +13,9 @@ public class ConcertTicket extends Ticket {
 
         System.out.print("Seat: ");
         if(event instanceof Concert) {  // downcasting
-           if(((Concert) event).getStanding())
+            System.out.println(seat + ", price: " + price + "$ ");
+            if(((Concert) event).getStanding())
                System.out.println("standing");
-           else
-               System.out.println(seat + ", price: " + price + "$");
         }
     }
 }

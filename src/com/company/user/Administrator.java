@@ -28,12 +28,14 @@ public class Administrator {
     public void addEvent(Scanner scanner) {
         Theatre theatre = Theatre.getTheatre();
 
+        scanner.nextLine();
         System.out.print("Enter event name: ");
-        String eventName = scanner.next();
+        String eventName = scanner.nextLine();
         System.out.print("Enter starting price ($): ");
         double startingPrice = scanner.nextDouble();
+        scanner.nextLine();
         System.out.print("Enter event description: ");
-        String description = scanner.next();
+        String description = scanner.nextLine();
         System.out.print("Enter event type: ");
         String type = scanner.next();
         System.out.print("Enter event starting hour: ");
@@ -151,7 +153,7 @@ public class Administrator {
         boolean ok = theatre.deleteEvent(event);
         if(ok) {
             WriteService.getWriteService().deleteEvent(event);
-            AuditService.getAuditService().writeAudit("Admin id: " + id + " deleted event id: " + event.getEventId());
+            AuditService.getAuditService().writeAudit("Admin id: " + this.id + " deleted event id: " + event.getEventId());
             System.out.println("Event deleted!\n");
         }
         else
