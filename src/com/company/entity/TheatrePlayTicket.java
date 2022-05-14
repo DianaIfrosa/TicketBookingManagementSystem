@@ -12,7 +12,8 @@ public class TheatrePlayTicket extends Ticket {
                 event.getYear()+ " " + event.getStartingHour() + "-" + event.getEndingHour());
         System.out.println("Seat: " + seat + ", price: " + price + "$");
 
-        if(event instanceof TheatrePlay) {  //downcasting
+        if(event instanceof TheatrePlay) {
+            // downcasting
             System.out.println("Has intermission: " + ((TheatrePlay) event).getHasIntermission());
         }
     }
