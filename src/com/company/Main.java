@@ -1,5 +1,4 @@
 package com.company;
-
 import com.company.entity.*;
 import com.company.service.*;
 import com.company.user.*;
