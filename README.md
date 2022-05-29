@@ -1,5 +1,5 @@
 # TicketBookingManagementSystem
-This Java project simulates a ticket booking management system for cultural events of a theatre.  
+This Java project simulates a ticket booking management system for cultural events of a theatre. 
 Course: Advanced OOP.
 
 ## Objects:
@@ -7,7 +7,7 @@ Course: Advanced OOP.
 2. Theatre
 3. Concert
 4. TheatrePlay
-5.  ConcertTicket
+5. ConcertTicket
 6. TheatrePlayTicket
 7. Administrator
 8. Customer
@@ -43,10 +43,14 @@ Course: Advanced OOP.
 1. See all events
 2. Add event
 3. Delete event
+4. See all halls
+5. Add hall
+6. Delete hall
 
 - for both customer and admin:
 1. Sign up
 2. Log in
 3. Log out 
+4. Delete my account
 
 
