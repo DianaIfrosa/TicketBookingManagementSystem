@@ -6,10 +6,16 @@ public class Theatre {
     // singleton (early initialization)
     public static final Theatre theatre = new Theatre();
 
-    private String name;
-    private String address;
-    private String description;
-    private Map<String, String> openHours;
+    private final String name = "Happy Tickets";
+    private final String address = "Street no. 5A, New York";
+    private final String description = "Our job is to bring you exciting and sophisticated shows, so that you can relax and create amazing memories!";
+    private final Map<String, String> openHours = Map.of("Monday", "10-18",
+            "Tuesday", "10-18",
+            "Wednesday", "10-18",
+            "Thursday", "10-18",
+            "Friday", "10-16",
+            "Saturday", "10-14",
+            "Sunday","closed");
     private List<Hall> halls;
     private List<Event> futureEvents;
     private List<Event> pastEvents;
@@ -20,7 +26,6 @@ public class Theatre {
         halls = new ArrayList<>();
         futureEvents = new ArrayList<>();
         pastEvents = new ArrayList<>();
-        openHours = new LinkedHashMap<>();
     }
 
     public static Theatre getTheatre() {
@@ -46,7 +51,7 @@ public class Theatre {
         return false; // something went wrong
     }
 
-    public boolean deleteEvent(Event event){
+    public boolean deleteEvent(int id){
         if (futureEvents == null)
             return false;
         if (futureEvents.size() == 0)
@@ -55,7 +60,7 @@ public class Theatre {
         boolean found = false;
 
         for (int i = 0; i < futureEvents.size(); i++)
-            if (futureEvents.get(i).getEventId() == event.getEventId()) {
+            if (futureEvents.get(i).getEventId() == id) {
                 found = true;
                 futureEvents.remove(i);
                 break;
@@ -118,6 +123,20 @@ public class Theatre {
         return null;
     }
 
+    public void addHall(Hall hall){
+        halls.add(hall);
+    }
+
+    public void deleteHall(int id){
+
+        int index = -1 ;
+        for(int i=0; i<halls.size(); i++)
+           if (halls.get(i).getId() == id)
+               index = i;
+        if(index != -1)
+            halls.remove(index);
+    }
+
     public List<Hall> getHalls() {
         return halls;
     }
@@ -135,22 +154,6 @@ public class Theatre {
 
     public void setHalls(List<Hall> halls) {
         this.halls = halls;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setOpenHours(Map<String, String> openHours) {
-        this.openHours = openHours;
     }
 
     public void setPastEvents(List<Event> pastEvents) {

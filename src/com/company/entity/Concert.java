@@ -42,7 +42,7 @@ public class Concert extends Event {
         System.out.println("Description: " + this.description);
         System.out.println("Date and hours: " + this.day + "." + this.month + "." + this.year + " "
                 + this.startingHour + "-" + this.endingHour);
-        System.out.println("Is it a standing concert: " + this.standing);
+        System.out.println("It is a standing concert: " + this.standing);
         System.out.println("Starting price: " + this.startingPrice  + "$");
     }
 }
