@@ -1,12 +1,14 @@
 package com.company.user;
 
+import com.company.database.DatabaseManager;
 import com.company.entity.Theatre;
 import com.company.entity.Hall;
 import com.company.entity.Concert;
 import com.company.entity.Event;
 import com.company.entity.TheatrePlay;
-import com.company.service.AuditService;
-import com.company.service.WriteService;
+import com.company.repository.AuditRepository;
+import com.company.repository.EventRepository;
+import com.company.repository.HallRepository;
 
 import java.util.Scanner;
 
@@ -115,8 +117,8 @@ public class Administrator {
 
         boolean ok = theatre.addEvent(event);
         if(ok) {
-            WriteService.getWriteService().writeEvent(event);
-            AuditService.getAuditService().writeAudit("Admin id: " + id + " added event id: " + event.getEventId());
+            EventRepository.addEvent(event);
+            AuditRepository.addToAudit("Admin id: " + id + " added event id: " + event.getEventId());
             System.out.println("Event added!\n");
         }
         else
@@ -126,8 +128,9 @@ public class Administrator {
     public void deleteEvent(Scanner scanner){
         Theatre theatre = Theatre.getTheatre();
 
+        System.out.println("You can only delete future events!");
+        System.out.println("Future events:");
         theatre.showFutureEvents();
-        theatre.showPastEvents();
 
         if (theatre.getFutureEvents()!= null){
             if(theatre.getFutureEvents().size() == 0) {
@@ -140,20 +143,16 @@ public class Administrator {
         System.out.print("Enter the event ID you would like to delete: ");
         int id = scanner.nextInt();
 
-        Event event = Theatre.theatre.findFutureEvent(id);
-        if (event == null)
-        {
-            event = Theatre.theatre.findPastEvent(id);
-            if (event == null) {
+        boolean found = EventRepository.findEvent(id);
+        if (!found) {
                 System.out.println("Event not found! Please try again!\n");
                 return;
             }
-        }
 
-        boolean ok = theatre.deleteEvent(event);
+        boolean ok = theatre.deleteEvent(id); // it is a future event
         if(ok) {
-            WriteService.getWriteService().deleteEvent(event);
-            AuditService.getAuditService().writeAudit("Admin id: " + this.id + " deleted event id: " + event.getEventId());
+            EventRepository.deleteEvent(id);
+            AuditRepository.addToAudit("Admin id: " + this.id + " deleted event id: " + id);
             System.out.println("Event deleted!\n");
         }
         else
@@ -170,6 +169,59 @@ public class Administrator {
         Theatre theatre = Theatre.getTheatre();
         theatre.showPastEvents();
         System.out.println();
+    }
+
+    public void addHall(Scanner scanner){
+        Theatre theatre = Theatre.getTheatre();
+        scanner.nextLine();
+
+        System.out.print("Hall name:");
+        String name = scanner.nextLine();
+
+        System.out.print("Floor:");
+        int floor = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Is this hall available? (y/n)");
+        String ans = scanner.next();
+        while(!ans.equals("n") && !ans.equals("y"))
+        {
+            System.out.println("Please type y or n!");
+            ans = scanner.next();
+        }
+        boolean available = ans.equals("y");
+        System.out.print("Rows number:");
+        int rows = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Columns number:");
+        int columns = scanner.nextInt();
+        scanner.nextLine();
+
+        Hall hall = new Hall(name, floor, available, rows, columns);
+        HallRepository.addHall(hall);
+        int id = DatabaseManager.lastIdFromTable("hall");
+        hall.setId(id);
+        theatre.addHall(hall);
+        AuditRepository.addToAudit("Admin id: " + administrator.getId() + " added hall id: " + id);
+        System.out.println("Hall added successfully!");
+    }
+
+    public void deleteHall(Scanner scanner){
+        scanner.nextLine();
+        Theatre theatre = Theatre.getTheatre();
+
+        System.out.print("Hall id:");
+        int id = scanner.nextInt();
+
+        if (HallRepository.findHall(id) == null)
+            System.out.println("Invalid id. Please try again!");
+        else{
+            HallRepository.deleteHall(id);
+            theatre.deleteHall(id);
+            AuditRepository.addToAudit("Admin id: " + administrator.getId() + " deleted hall id: " + id);
+            System.out.println("Hall successfully deleted!");
+        }
+
     }
 
     public int getId() {

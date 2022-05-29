@@ -2,9 +2,10 @@ package com.company.service;
 
 import com.company.entity.Theatre;
 import com.company.entity.Event;
+import com.company.repository.AuditRepository;
+import com.company.repository.CustomerRepository;
 import com.company.user.Customer;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,10 +36,11 @@ public class CustomerService implements IService {
         System.out.println("8. Add to My Favorites");
         System.out.println("9. Delete from My Favorites");
         System.out.println("10. See details of an event");
-        System.out.println("11. Log out");
+        System.out.println("11. Delete my account");
+        System.out.println("12. Log out");
     }
 
-    public void useMenu(Scanner scanner) throws IOException {
+    public void useMenu(Scanner scanner){
         while (true) {
             this.showMenu();
             System.out.print("Your option: ");
@@ -48,6 +50,7 @@ public class CustomerService implements IService {
                 if (option == 1) {
                     System.out.println("\n-----------Future events-----------");
                     seeFutureEvents();
+                    AuditRepository.addToAudit("Customer id: " + customer.getId() + " viewed all events");
                 }
                 else if (option == 2) {
                     System.out.println("\n-----------Search using date-----------");
@@ -59,12 +62,16 @@ public class CustomerService implements IService {
                     System.out.print("Year: ");
                     int year = scanner.nextInt();
                     searchUsingDate(day, month, year);
+                    AuditRepository.addToAudit("Customer id: " + customer.getId() + " searched events using date: "+
+                            day + "-" + month + "-" + year);
                 }
                 else if (option == 3) {
                     System.out.println("\n-----------Search based on budget-----------");
                     System.out.print("Please enter your maximum budget:");
                     int budget = scanner.nextInt();
                     searchUsingBudget(budget);
+                    AuditRepository.addToAudit("Customer id: " + customer.getId() + " searched events with max budget: "
+                            + budget);
                 }
                 else if (option == 4){
                     System.out.println("\n-----------Buy tickets-----------");
@@ -77,14 +84,17 @@ public class CustomerService implements IService {
                 else if (option == 5) {
                     System.out.println("\n-----------See purchased tickets for future events-----------");
                     customer.showPurchasedTickets();
+                    AuditRepository.addToAudit("Customer id: " + customer.getId() + " viewed his/her future tickets");
                 }
                 else if (option == 6) {
                     System.out.println("\n-----------Show old tickets-----------");
                     customer.showOldTickets();
+                    AuditRepository.addToAudit("Customer id: " + customer.getId() + " viewed his/her old tickets");
                 }
                 else if (option == 7) {
                     System.out.println("\n-----------Your favorites-----------");
                     customer.showFavorites();
+                    AuditRepository.addToAudit("Customer id: " + customer.getId() + " viewed his/her favorites list");
                 }
                 else if (option == 8){
                     System.out.println("\n-----------Add to favorites list-----------");
@@ -173,8 +183,16 @@ public class CustomerService implements IService {
                     System.out.print("Please enter the ID of the event you want to see: ");
                     int id = scanner.nextInt();
                     seeAnEvent(id);
+                    AuditRepository.addToAudit("Customer id: " + customer.getId() + " viewed show id: " + id);
                 }
-                else if (option == 11) {
+                else if (option == 11){
+                    CustomerRepository.deleteCustomer(Customer.getCustomer().getUsername());
+                    System.out.println("\nAccount deleted!");
+                    System.out.println("Automatically logging you out...");
+                    Registration.getRegistration().logOut(customer.getId(), customer.getUsername());
+                    break;
+                }
+                else if (option == 12) {
                     System.out.println("\n-----------Logout-----------");
                     Registration.getRegistration().logOut(customer.getId(), customer.getUsername());
                     break;
@@ -200,7 +218,7 @@ public class CustomerService implements IService {
                     System.out.println((i + 1) + ". " + events.get(i));
                     found = true;
                 }
-            if (found == false)
+            if (! found)
                 System.out.println("No events found!");
         }
         System.out.println();
@@ -222,7 +240,7 @@ public class CustomerService implements IService {
                     System.out.println((i + 1) + ". " + events.get(i));
                     found = true;
                 }
-            if(found == false)
+            if(! found )
                 System.out.println("No events found");
         }
         System.out.println();
@@ -249,6 +267,6 @@ public class CustomerService implements IService {
     }
 
     public boolean verifyOption(int option){
-            return option <= 11 && option >= 1;
+            return option <= 12 && option >= 1;
         }
 }

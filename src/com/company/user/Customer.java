@@ -7,10 +7,10 @@ import com.company.entity.TheatrePlay;
 import com.company.entity.ConcertTicket;
 import com.company.entity.TheatrePlayTicket;
 import com.company.entity.Ticket;
-import com.company.service.AuditService;
-import com.company.service.WriteService;
+import com.company.repository.AuditRepository;
+import com.company.repository.FavoritesRepository;
+import com.company.repository.TicketRepository;
 
-import java.io.IOException;
 import java.util.*;
 
 public class Customer {
@@ -170,14 +170,14 @@ public class Customer {
 
             if (t != null) {
                 futureTickets.add(t);
-                WriteService.getWriteService().writeTicket(this.id, t);
+                TicketRepository.addTicket(this.id, t);
             }
         }
 
         // mark seats as purchased
         int initialAvailableSeats = event.getNoAvailableSeats();
         event.setNoAvailableSeats(initialAvailableSeats - seats.size());
-        AuditService.getAuditService().writeAudit("Customer id: " + this.id + " bought " + seats.size()
+        AuditRepository.addToAudit("Customer id: " + this.id + " bought " + seats.size()
                                                  + " ticket(s) for event id: " + event.getEventId());
 
         // lambda expression for sort
@@ -229,10 +229,9 @@ public class Customer {
             System.out.println("None");
         else if (favorites.size() == 0)
             System.out.println("None");
-        else {
-            for (Event event:favorites)
-                System.out.println(event.getEventId() + ". " + event.getNameEvent());
-        }
+        else
+            FavoritesRepository.showUserFavoriteEvents(this.getId());
+
         System.out.println();
     }
 
@@ -252,12 +251,12 @@ public class Customer {
         }
 
         favorites.add(event);
-        WriteService.getWriteService().writeToFavorites(this.id, event);
-        AuditService.getAuditService().writeAudit("Customer id: " + this.id + " added event id: " + id + " to favorites");
+        FavoritesRepository.addFavoriteEvent(this.id, id);
+        AuditRepository.addToAudit("Customer id: " + this.id + " added event id: " + id + " to favorites");
         return true;
     }
 
-    public boolean deleteFromFavs(int id) throws  IOException{
+    public boolean deleteFromFavs(int id){
         if(favorites == null)
             return false;
 
@@ -276,8 +275,8 @@ public class Customer {
             return false;
 
         favorites.remove(event);
-        WriteService.getWriteService().deleteFromFavorites(this.id, event);
-        AuditService.getAuditService().writeAudit("Customer id: " + this.id + " deleted event id: " + id + " from favorites");
+        FavoritesRepository.deleteFavoriteEvent(this.id, id);
+        AuditRepository.addToAudit("Customer id: " + this.id + " deleted event id: " + id + " from favorites");
         return true;
     }
 

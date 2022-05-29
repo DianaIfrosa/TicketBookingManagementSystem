@@ -1,4 +1,5 @@
 package com.company;
+import com.company.database.DatabaseManager;
 import com.company.entity.*;
 import com.company.service.*;
 import com.company.user.*;
@@ -12,8 +13,8 @@ public class Main {
         Theatre theatre = Theatre.getTheatre();
         Registration registration = Registration.getRegistration();
 
-        ReadService r = ReadService.getReadService();
-        r.readTheatre("D:\\facultate\\PAO\\TicketBookingManagementSystem\\Files");
+        DatabaseManager manager = DatabaseManager.getDatabaseManager(); //database is initialized when manager is created
+        manager.initTheatre();
 
         theatre.showTheatreInformation();
 
@@ -49,7 +50,7 @@ public class Main {
             int res = registration.logIn(scanner);
             if (res == 1) {
                 CustomerService customerS = CustomerService.getCustomerService(Customer.getCustomer());
-                ReadService.getReadService().readCustomerData(Customer.getCustomer().getId());
+                manager.initCustomer();
                 customerS.useMenu(scanner);
                 break;
             }

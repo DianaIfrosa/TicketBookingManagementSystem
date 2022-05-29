@@ -38,7 +38,7 @@ public class TheatrePlay extends Event {
         System.out.println("Description: " + this.description);
         System.out.println("Date and hours: " + this.day + "." + this.month + "." + this.year + " "
                             + this.startingHour + "-" + this.endingHour);
-        System.out.println("Does it have intermission: " + this.hasIntermission);
+        System.out.println("It has intermission: " + this.hasIntermission);
         System.out.println("Starting price: " + this.startingPrice + "$");
     }
 }

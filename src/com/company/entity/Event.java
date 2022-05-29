@@ -2,6 +2,7 @@ package com.company.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Event implements Comparable<Event>{
     protected int eventId;
@@ -135,6 +136,20 @@ public abstract class Event implements Comparable<Event>{
 
     public String toString(){
         return nameEvent + " " + this.day + "-" + this.month + "-" + this.year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event))
+            return false;
+        Event event = (Event) o;
+        return getEventId() == event.getEventId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEventId());
     }
 }
 
