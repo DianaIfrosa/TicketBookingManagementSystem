@@ -1,4 +1,5 @@
 package com.company;
+import com.company.database.DatabaseConfiguration;
 import com.company.database.DatabaseManager;
 import com.company.entity.*;
 import com.company.service.*;
@@ -64,5 +65,6 @@ public class Main {
             }
         }
         scanner.close();
+        DatabaseConfiguration.closeDatabase();
     }
 }
